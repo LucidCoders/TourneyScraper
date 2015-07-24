@@ -19,7 +19,7 @@ public class TestGroup {
     List<String> registrationOpens = new ArrayList<String>();	// Registration Opens
     List<String> registrationCloses = new ArrayList<String>();	// Registration Closes
 
-    /********* BuyInDetails *******/
+    /********* Buy-In Details *******/
     List<String> totalBuyIn = new ArrayList<String>();		// Total Buy-In
     List<String> entryFee = new ArrayList<String>();		// Entry Fee
     List<String> adminFee = new ArrayList<String>();		// Admin Fee

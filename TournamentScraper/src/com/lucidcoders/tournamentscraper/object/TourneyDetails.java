@@ -19,6 +19,7 @@ public class TourneyDetails {
     private Format format;
     private Size size;
     private Structure structure;
+    private OtherInfo otherInfo;
 
     public String getCasinoName() {
 	return casinoName;
@@ -130,6 +131,14 @@ public class TourneyDetails {
 
     public void setStructure(Structure structure) {
 	this.structure = structure;
+    }
+
+    public OtherInfo getOtherInfo() {
+	return otherInfo;
+    }
+
+    public void setOtherInfo(OtherInfo otherInfo) {
+	this.otherInfo = otherInfo;
     }
 
     /********************** Inner Class ***********************/
