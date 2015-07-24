@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 
 import com.lucidcoders.tournamentscraper.scrape.AtlasDetailsScrape;
-import com.lucidcoders.tournamentscraper.scrape.AtlasUpcomingScrape;
 
 
 public class TournamentScraperMain {
@@ -15,6 +14,6 @@ public class TournamentScraperMain {
 //	new PokerAtlasScrape().execute();
 //	new AtlasAreasScrape().execute();
 	new AtlasDetailsScrape().execute();
-//	new AtlasUpcomingScrape().execute();	
+//	new AtlasUpcomingScrape().execute();
     }
 }

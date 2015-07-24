@@ -1,36 +1,55 @@
 package com.lucidcoders.tournamentscraper.object;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public enum DetailGroup {
 
-    TOURNAMENT_INFO("Tournament Info", new ArrayList<String>() {
-	private static final long serialVersionUID = 1L;
-	{
-	    add("Event Number");
-	    add("Event Name");
-	    add("Event Type");
-	    add("Game Type");
-	    add("Event Start Date");
-	    add("Starting Flights");
-	    add("Event Type");
-	}
-    });
+    TOURNAMENT_INFO("Tournament Info");
 
     private String groupName;
-    private List<String> groupParams = new ArrayList<String>();
     
-    private DetailGroup(String groupName, List<String> groupParams) {
+    private DetailGroup(String groupName) {
 	this.groupName = groupName;
-	this.groupParams = groupParams;
     }
 
     public String getGroupName() {
 	return groupName;
     }
-
-    public List<String> getGroupParams() {
-	return groupParams;
+    
+    /************** Inner Class ****************/
+    public enum TournamentInfoField {
+	
+	EVENT_NUMBER("Event Number"),
+	EVENT_NAME("Event Name"),
+	EVENT_TYPE("Event Type"),
+	GAME_TYPE("Game Type"),
+	EVENT_START_DATE("Event Start Date"),
+	STARTING_FLIGHTS("Starting Flights"),
+	LENGTH_OF_EVENT("Length of Event");	
+	
+	private String fieldName;
+	
+	private TournamentInfoField(String fieldName) {
+	    this.fieldName = fieldName;
+	}
+	
+	public String getFieldName() {
+	    return fieldName;
+	}
+	
     }
+    
+    
+    /************** Inner Class ****************/
+    
+    
+    /************** Inner Class ****************/
+    
+    
+    /************** Inner Class ****************/
+    
+    
+    /************** Inner Class ****************/
+    
+    
+    /************** Inner Class ****************/
 }
