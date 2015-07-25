@@ -1,15 +1,19 @@
 package com.lucidcoders.tournamentscraper.object;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class TourneyDetails {
 
+    private String atlasId;
+    private Long casinoId;
     private String casinoName;
     private String eventName;
+    private Long seriesId;
     private String seriesName;
     private String buyIn;
-    private String eventDate;
+    private Date eventDate;
     private String eventTime;
     private String addressText;
     private String addressUrl;
@@ -53,11 +57,11 @@ public class TourneyDetails {
 	this.buyIn = buyIn;
     }
 
-    public String getEventDate() {
+    public Date getEventDate() {
 	return eventDate;
     }
 
-    public void setEventDate(String eventDate) {
+    public void setEventDate(Date eventDate) {
 	this.eventDate = eventDate;
     }
 
@@ -139,6 +143,30 @@ public class TourneyDetails {
 
     public void setOtherInfo(OtherInfo otherInfo) {
 	this.otherInfo = otherInfo;
+    }
+
+    public String getAtlasId() {
+	return atlasId;
+    }
+
+    public void setAtlasId(String atlasId) {
+	this.atlasId = atlasId;
+    }
+
+    public Long getCasinoId() {
+	return casinoId;
+    }
+
+    public void setCasinoId(Long casinoId) {
+	this.casinoId = casinoId;
+    }
+
+    public Long getSeriesId() {
+	return seriesId;
+    }
+
+    public void setSeriesId(Long seriesId) {
+	this.seriesId = seriesId;
     }
 
     /********************** Inner Class ***********************/

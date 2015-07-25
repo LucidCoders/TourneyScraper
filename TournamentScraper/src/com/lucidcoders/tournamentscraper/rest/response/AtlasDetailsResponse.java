@@ -1,7 +1,9 @@
 package com.lucidcoders.tournamentscraper.rest.response;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
 import com.google.gson.annotations.SerializedName;
 
 public class AtlasDetailsResponse extends BaseQueryResponse {
@@ -32,7 +34,7 @@ public class AtlasDetailsResponse extends BaseQueryResponse {
 	private String casinoText;
 	private String series;
 	@SerializedName("event_date")
-	private String eventDate;
+	private Date eventDate;
 	@SerializedName("casino/_source")
 	private String casinoSource;
 	@SerializedName("event_name")
@@ -103,11 +105,11 @@ public class AtlasDetailsResponse extends BaseQueryResponse {
 	    this.series = series;
 	}
 
-	public String getEventDate() {
+	public Date getEventDate() {
 	    return eventDate;
 	}
 
-	public void setEventDate(String eventDate) {
+	public void setEventDate(Date eventDate) {
 	    this.eventDate = eventDate;
 	}
 

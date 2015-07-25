@@ -2,6 +2,7 @@ package com.lucidcoders.tournamentscraper.scrape;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,17 +32,19 @@ import com.lucidcoders.tournamentscraper.rest.response.AtlasDetailsResponse;
 import com.lucidcoders.tournamentscraper.rest.response.AtlasDetailsResponse.Result;
 
 public class AtlasDetailsScrape {
+    
+    private String mUrl;
 
     public void execute() throws URISyntaxException, IOException {
-
-	ImportIoRequest atlasDetailsRequest = new ImportIoRequest(
-		"http://www.pokeratlas.com/poker-tournament/2015-wpt-deepstacks-chicagoland-event-14-1100-nl-holdem-no-limit-holdem-main-event-majestic-star?topid=105873-3896");
+	
+	mUrl = "http://www.pokeratlas.com/poker-tournament/2015-wpt-deepstacks-chicagoland-event-14-1100-nl-holdem-no-limit-holdem-main-event-majestic-star?topid=105873-3896";
+	ImportIoRequest atlasDetailsRequest = new ImportIoRequest(mUrl);
 
 	HttpResponse response = atlasDetailsRequest.queryGet(Extractor.ATLAS_DETAILS);
 
 	if (response.getStatusLine().getStatusCode() == 200) {
 
-	    Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+	    Gson gson = new GsonBuilder().disableHtmlEscaping().setDateFormat("EEEE, MMM d, yyyy").create();
 
 	    AtlasDetailsResponse detailsResponse = gson.fromJson(atlasDetailsRequest.getResult(),
 		    AtlasDetailsResponse.class);
@@ -55,6 +58,8 @@ public class AtlasDetailsScrape {
     private TourneyDetails buildTourneyDetails(AtlasDetailsResponse detailsResponse) {
 
 	TourneyDetails tourneyDetails = new TourneyDetails();
+	String atlasId = mUrl.substring(mUrl.indexOf("topid=")).replace("topid=", "");
+	tourneyDetails.setAtlasId(atlasId);
 
 	boolean firstPass = true;
 
@@ -100,6 +105,7 @@ public class AtlasDetailsScrape {
     }
 
     private void buildTournamentDetails(TourneyDetails tourneyDetails, Result eachResult) {
+	
 	tourneyDetails.setCasinoName(eachResult.getCasinoText());
 	tourneyDetails.setEventName(eachResult.getEventName());
 	tourneyDetails.setSeriesName(eachResult.getSeriesText());
