@@ -61,7 +61,7 @@ public class BaseQueryResponse {
     }
 
     /********************** Inner Classes ***********************/
-    
+
     public class OutputProperty {
 
 	private String name;

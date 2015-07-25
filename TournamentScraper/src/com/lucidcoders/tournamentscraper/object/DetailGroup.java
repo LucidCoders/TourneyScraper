@@ -174,19 +174,3 @@ public enum DetailGroup {
 	
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

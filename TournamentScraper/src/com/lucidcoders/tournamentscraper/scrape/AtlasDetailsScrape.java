@@ -45,7 +45,7 @@ public class AtlasDetailsScrape {
 
 	    AtlasDetailsResponse detailsResponse = gson.fromJson(atlasDetailsRequest.getResult(),
 		    AtlasDetailsResponse.class);
-	    
+
 	    TourneyDetails tourneyDetails = buildTourneyDetails(detailsResponse);
 
 	    System.out.println(gson.toJson(tourneyDetails, TourneyDetails.class));
@@ -53,7 +53,7 @@ public class AtlasDetailsScrape {
     }
 
     private TourneyDetails buildTourneyDetails(AtlasDetailsResponse detailsResponse) {
-	
+
 	TourneyDetails tourneyDetails = new TourneyDetails();
 
 	boolean firstPass = true;
@@ -61,44 +61,44 @@ public class AtlasDetailsScrape {
 	for (Result eachResult : detailsResponse.getResults()) {
 
 	    if (firstPass) {
-		
+
 		buildTournamentDetails(tourneyDetails, eachResult);
 		firstPass = false;
 
 	    } else if (eachResult.getDetailGroup().equalsIgnoreCase(DetailGroup.TOURNAMENT_INFO.getGroupName())) {
-		
+
 		buildTournamentInfo(tourneyDetails, eachResult);
-		
+
 	    } else if (eachResult.getDetailGroup().equalsIgnoreCase(DetailGroup.REGISTRATION.getGroupName())) {
-		
+
 		buildRegistration(tourneyDetails, eachResult);
-		
+
 	    } else if (eachResult.getDetailGroup().equalsIgnoreCase(DetailGroup.BUYIN_DETAILS.getGroupName())) {
-		
+
 		buildBuyinDetails(tourneyDetails, eachResult);
-		
+
 	    } else if (eachResult.getDetailGroup().equalsIgnoreCase(DetailGroup.FORMAT.getGroupName())) {
-		
+
 		buildFormat(tourneyDetails, eachResult);
-		
+
 	    } else if (eachResult.getDetailGroup().equalsIgnoreCase(DetailGroup.SIZE.getGroupName())) {
-		
+
 		buildSize(tourneyDetails, eachResult);
-		
+
 	    } else if (eachResult.getDetailGroup().equalsIgnoreCase(DetailGroup.STRUCTURE.getGroupName())) {
-		
+
 		buildStructure(tourneyDetails, eachResult);
-		
+
 	    } else if (eachResult.getDetailGroup().equalsIgnoreCase(DetailGroup.OTHER_INFO.getGroupName())) {
-		
+
 		buildOtherInfo(tourneyDetails, eachResult);
-		
+
 	    }
 	}
 
 	return tourneyDetails;
     }
-    
+
     private void buildTournamentDetails(TourneyDetails tourneyDetails, Result eachResult) {
 	tourneyDetails.setCasinoName(eachResult.getCasinoText());
 	tourneyDetails.setEventName(eachResult.getEventName());
@@ -117,7 +117,7 @@ public class AtlasDetailsScrape {
 	TournamentInfo tournamentInfo = tourneyDetails.new TournamentInfo();
 
 	for (String string : eachResult.getDetails()) {
-	    
+
 	    if (string.equalsIgnoreCase(TournamentInfoField.EVENT_NUMBER.getFieldName())) {
 
 		currentField = TournamentInfoField.EVENT_NUMBER;
@@ -161,52 +161,52 @@ public class AtlasDetailsScrape {
 		    values.add(string);
 		    tournamentInfo.setEventNumber(values);
 		    break;
-		    
+
 		case EVENT_NAME:
 		    values.add(string);
-		    tournamentInfo.setEventName(values);		    
+		    tournamentInfo.setEventName(values);
 		    break;
-		    
+
 		case EVENT_TYPE:
 		    values.add(string);
-		    tournamentInfo.setEventType(values);		    
+		    tournamentInfo.setEventType(values);
 		    break;
-		    
+
 		case GAME_TYPE:
 		    values.add(string);
-		    tournamentInfo.setGameType(values);		    
+		    tournamentInfo.setGameType(values);
 		    break;
 
 		case EVENT_START_DATE:
 		    values.add(string);
 		    tournamentInfo.setEventStartDate(values);
 		    break;
-		    
+
 		case STARTING_FLIGHTS:
 		    values.add(string);
 		    tournamentInfo.setStartingFlights(values);
-		    
+
 		    break;
-		    
+
 		case LENGTH_OF_EVENT:
 		    values.add(string);
-		    tournamentInfo.setLengthofEvent(values);		    
+		    tournamentInfo.setLengthofEvent(values);
 		    break;
 		}
 	    }
-	    
+
 	    tourneyDetails.setTourneyInfo(tournamentInfo);
 	}
     }
-    
+
     private void buildRegistration(TourneyDetails tourneyDetails, Result eachResult) {
-	
+
 	List<String> values = new ArrayList<String>();
 	RegistrationField currentField = null;
 	Registration registration = tourneyDetails.new Registration();
-	
+
 	for (String string : eachResult.getDetails()) {
-	    
+
 	    if (string.equalsIgnoreCase(RegistrationField.START_TIME.getFieldName())) {
 
 		currentField = RegistrationField.START_TIME;
@@ -223,30 +223,30 @@ public class AtlasDetailsScrape {
 		values = new ArrayList<String>();
 
 	    } else if (currentField != null) {
-		
+
 		switch (currentField) {
-		
+
 		case START_TIME:
 		    values.add(string);
 		    registration.setStartTime(values);
 		    break;
-		    
+
 		case REGISTRATION_OPENS:
 		    values.add(string);
 		    registration.setRegistrationOpens(values);
 		    break;
-		    
+
 		case REGISTRATION_CLOSES:
 		    values.add(string);
 		    registration.setRegistrationCloses(values);
 		    break;
 		}
 	    }
-	    
+
 	    tourneyDetails.setRegistration(registration);
 	}
     }
-    
+
     private void buildBuyinDetails(TourneyDetails tourneyDetails, Result eachResult) {
 
 	List<String> values = new ArrayList<String>();
@@ -271,19 +271,19 @@ public class AtlasDetailsScrape {
 		values = new ArrayList<String>();
 
 	    } else if (currentField != null) {
-		
+
 		switch (currentField) {
-		
+
 		case TOTAL_BUYIN:
 		    values.add(string);
 		    buyInDetails.setTotalBuyIn(values);
 		    break;
-		    
+
 		case ENTRY_FEE:
 		    values.add(string);
 		    buyInDetails.setEntryFee(values);
 		    break;
-		    
+
 		case ADMIN_FEE:
 		    values.add(string);
 		    buyInDetails.setAdminFee(values);
@@ -291,16 +291,16 @@ public class AtlasDetailsScrape {
 		}
 	    }
 	}
-	
+
 	tourneyDetails.setBuyInDetails(buyInDetails);
     }
-    
+
     private void buildFormat(TourneyDetails tourneyDetails, Result eachResult) {
 
 	List<String> values = new ArrayList<String>();
 	FormatField currentField = null;
 	Format format = tourneyDetails.new Format();
-    
+
 	for (String string : eachResult.getDetails()) {
 
 	    if (string.equalsIgnoreCase(FormatField.STARTING_CHIPS.getFieldName())) {
@@ -384,84 +384,84 @@ public class AtlasDetailsScrape {
 		values = new ArrayList<String>();
 
 	    } else if (currentField != null) {
-		
+
 		switch (currentField) {
-		
+
 		case STARTING_CHIPS:
 		    values.add(string);
 		    format.setStartingChips(values);
 		    break;
-		    
+
 		case STAFF_BONUS:
 		    values.add(string);
 		    format.setStaffBonus(values);
 		    break;
-		    
+
 		case STAFF_BONUS_CHIPS:
 		    values.add(string);
 		    format.setStaffBonusChips(values);
 		    break;
-		    
+
 		case STARTING_BLINDS:
 		    values.add(string);
 		    format.setStartingBlinds(values);
 		    break;
-		    
+
 		case RE_ENTRY:
 		    values.add(string);
 		    format.setReEntry(values);
 		    break;
-		    
+
 		case RE_ENTRY_COST:
 		    values.add(string);
 		    format.setReEntryCost(values);
 		    break;
-		    
+
 		case RE_ENTRY_CHIPS:
 		    values.add(string);
 		    format.setReEntryChips(values);
 		    break;
-		    
+
 		case REBUYS:
 		    values.add(string);
 		    format.setRebuys(values);
 		    break;
-		    
+
 		case REBUY_COST:
 		    values.add(string);
 		    format.setRebuyCost(values);
 		    break;
-		    
+
 		case REBUY_CHIPS:
 		    values.add(string);
 		    format.setRebuyChips(values);
 		    break;
-		    
+
 		case ADDONS:
 		    values.add(string);
 		    format.setAddons(values);
 		    break;
-		    
+
 		case ADDON_COST:
 		    values.add(string);
 		    format.setAddonCost(values);
 		    break;
-		    
+
 		case ADDON_CHIPS:
 		    values.add(string);
 		    format.setAddonChips(values);
 		    break;
-		    
+
 		case BOUNTIES:
 		    values.add(string);
 		    format.setBounties(values);
 		    break;
-		    
+
 		case BOUNTY_AMOUNT:
 		    values.add(string);
 		    format.setBountyAmount(values);
 		    break;
-		    
+
 		case GUARANTEE:
 		    values.add(string);
 		    format.setGuarantee(values);
@@ -469,16 +469,16 @@ public class AtlasDetailsScrape {
 		}
 	    }
 	}
-	
+
 	tourneyDetails.setFormat(format);
     }
-    
+
     private void buildSize(TourneyDetails tourneyDetails, Result eachResult) {
 
 	List<String> values = new ArrayList<String>();
 	SizeField currentField = null;
 	Size size = tourneyDetails.new Size();
-	
+
 	for (String string : eachResult.getDetails()) {
 
 	    if (string.equalsIgnoreCase(SizeField.GUARANTEE.getFieldName())) {
@@ -494,12 +494,12 @@ public class AtlasDetailsScrape {
 	    } else if (currentField != null) {
 
 		switch (currentField) {
-		
+
 		case GUARANTEE:
 		    values.add(string);
 		    size.setGuarantee(values);
 		    break;
-		    
+
 		case ADDED_MONEY:
 		    values.add(string);
 		    size.setAddedMoney(values);
@@ -507,18 +507,18 @@ public class AtlasDetailsScrape {
 		}
 	    }
 	}
-	
+
 	tourneyDetails.setSize(size);
     }
-    
+
     private void buildStructure(TourneyDetails tourneyDetails, Result eachResult) {
 
 	List<String> values = new ArrayList<String>();
 	StructureField currentField = null;
 	Structure structure = tourneyDetails.new Structure();
-	
+
 	for (String string : eachResult.getDetails()) {
-	    
+
 	    if (string.equalsIgnoreCase(StructureField.LEVEL_TIME.getFieldName())) {
 
 		currentField = StructureField.LEVEL_TIME;
@@ -547,28 +547,29 @@ public class AtlasDetailsScrape {
 	    } else if (currentField != null) {
 
 		switch (currentField) {
-		
+
 		case LEVEL_TIME:
 		    values.add(string);
 		    structure.setLevelTime(values);
 		    break;
-		    
+
 		case BREAK_LENGTH:
 		    values.add(string);
 		    structure.setBreakLength(values);
 		    break;
-		    
+
 		case BREAK_FREQUENCY:
 		    values.add(string);
 		    structure.setBreakFrequency(values);
 		    break;
-		    
+
 		case BLIND_STRUCTURE:
-		    // currently not adding blind structure b/c I cannot get the link
-//		    values.add(string);
-//		    structure.setBlindStructure(values);
+		    // currently not adding blind structure b/c I cannot get the
+		    // link
+		    // values.add(string);
+		    // structure.setBlindStructure(values);
 		    break;
-		    
+
 		case STRUCTURE_NOTES:
 		    values.add(string);
 		    structure.setStructureNotes(values);
@@ -576,18 +577,18 @@ public class AtlasDetailsScrape {
 		}
 	    }
 	}
-	
+
 	tourneyDetails.setStructure(structure);
     }
-    
+
     private void buildOtherInfo(TourneyDetails tourneyDetails, Result eachResult) {
 
 	List<String> values = new ArrayList<String>();
 	OtherInfoField currentField = null;
 	OtherInfo otherInfo = tourneyDetails.new OtherInfo();
-	
+
 	for (String string : eachResult.getDetails()) {
-	    
+
 	    if (string.equalsIgnoreCase(OtherInfoField.GENERAL_NOTES.getFieldName())) {
 
 		currentField = OtherInfoField.GENERAL_NOTES;
@@ -596,7 +597,7 @@ public class AtlasDetailsScrape {
 	    } else if (currentField != null) {
 
 		switch (currentField) {
-		
+
 		case GENERAL_NOTES:
 		    values.add(string);
 		    otherInfo.setGeneralNotes(values);
@@ -604,38 +605,7 @@ public class AtlasDetailsScrape {
 		}
 	    }
 	}
-	
+
 	tourneyDetails.setOtherInfo(otherInfo);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

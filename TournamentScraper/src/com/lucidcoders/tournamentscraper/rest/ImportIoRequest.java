@@ -21,7 +21,7 @@ public class ImportIoRequest {
 
     private RequestConfig requestConfig;
     private final int TIMEOUT = 30 * 1000;
-    
+
     private final String USER_AGENT = "Mozilla/5.0";
     private final String USER_ID = "9edd0fab-f45b-4fb4-b6f6-8418d65b44fe";
     private final String API_KEY = "9edd0fabf45b4fb4b6f68418d65b44feda925482c0aa538685fe64ba2428e1908652f9b260beec9e08b81118d90cdb4b583229745e0de1f372998577a896c18c2768cce833339466010da98ccbc7ce1c";
@@ -35,9 +35,9 @@ public class ImportIoRequest {
     }
 
     public HttpResponse queryGet(Extractor extractor) throws URISyntaxException, IOException {
-	
+
 	mUrl = "https://api.import.io/store/data/" + extractor.getId() + "/_query";
-	
+
 	URIBuilder builder = new URIBuilder(mUrl);
 	builder.addParameter("input/webpage/url", mTargetUrl);
 	builder.addParameter("_user", USER_ID);
@@ -50,16 +50,16 @@ public class ImportIoRequest {
 	System.out.println("\nSending 'GET' request to URL : " + builder.build());
 	return executeGet(request);
     }
-    
+
     public HttpResponse magicGet() throws URISyntaxException, IOException {
-	
+
 	mUrl = "https://api.import.io/store/connector/_magic";
-	
+
 	URIBuilder builder = new URIBuilder(mUrl);
 	builder.addParameter("url", mTargetUrl);
 	builder.addParameter("_user", USER_ID);
 	builder.addParameter("_apikey", API_KEY);
-	
+
 	HttpGet request = new HttpGet(builder.build());
 	request.addHeader("User-Agent", USER_AGENT);
 	request.addHeader("content-type", "application/json");
@@ -67,14 +67,14 @@ public class ImportIoRequest {
 	System.out.println("\nSending 'GET' request to URL : " + builder.build());
 	return executeGet(request);
     }
-    
+
     private HttpResponse executeGet(HttpGet request) throws IOException {
-	
+
 	HttpClient client = HttpClientBuilder.create().setDefaultRequestConfig(requestConfig).build();
 	HttpResponse response = client.execute(request);
 
 	System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-	
+
 	mResult = EntityUtils.toString(response.getEntity(), "UTF-8");
 	System.out.println(mResult);
 
@@ -102,7 +102,7 @@ public class ImportIoRequest {
 	System.out.println("\nSending 'POST' request to URL : " + mUrl);
 	System.out.println("Post parameters : " + post.getEntity());
 	System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-	
+
 	mResult = EntityUtils.toString(response.getEntity(), "UTF-8");
 
 	System.out.println(mResult);

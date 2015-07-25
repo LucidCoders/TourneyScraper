@@ -17,7 +17,7 @@ public class AtlasDetailsResponse extends BaseQueryResponse {
     }
 
     /********************** Inner Classes ***********************/
-    
+
     public class Result {
 
 	@SerializedName("series/_text")

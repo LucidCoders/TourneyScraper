@@ -97,7 +97,7 @@ public class BaseMagicResponse {
     }
 
     /********************** Inner Classes ***********************/
-    
+
     public class Scores {
 
 	private List<Integer> rowDetector = new ArrayList<Integer>();

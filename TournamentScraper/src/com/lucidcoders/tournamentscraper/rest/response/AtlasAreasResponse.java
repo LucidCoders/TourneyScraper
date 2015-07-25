@@ -6,8 +6,8 @@ import java.util.List;
 import com.google.gson.annotations.SerializedName;
 
 public class AtlasAreasResponse extends BaseQueryResponse {
-    
-    private List<Result> results = new ArrayList<Result>();    
+
+    private List<Result> results = new ArrayList<Result>();
 
     public List<Result> getResults() {
 	return results;
@@ -18,7 +18,7 @@ public class AtlasAreasResponse extends BaseQueryResponse {
     }
 
     /********************** Inner Classes ***********************/
-    
+
     public class Result {
 
 	private List<String> area = new ArrayList<String>();

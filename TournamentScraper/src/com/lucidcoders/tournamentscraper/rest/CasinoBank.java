@@ -224,23 +224,3 @@ public enum CasinoBank {
 	return id;
     }    
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

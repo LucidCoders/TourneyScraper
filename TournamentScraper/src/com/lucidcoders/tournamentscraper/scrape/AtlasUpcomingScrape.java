@@ -25,16 +25,16 @@ public class AtlasUpcomingScrape {
 	    MyBufferedWriter writer = new MyBufferedWriter();
 	    writer.writeToFile("*** EVENT LINK RESULTS ***");
 	    writer.appendToFile("**************************\n");
-	    
+
 	    AtlasUpcomingResponse upcomingResponse = new Gson().fromJson(atlasUpcomingRequest.getResult(),
 		    AtlasUpcomingResponse.class);
-	    
+
 	    int count = 1;
 	    for (Result result : upcomingResponse.getResults()) {
 		writer.appendToFile("EventLink #" + count + ": " + result.getEventLink());
 		count++;
 	    }
-	    
+
 	    for (int i = 1; i <= 3; i++) {
 		ImportIoRequest atlasUpcomingScrollRequest = new ImportIoRequest(baseUrl + "?page=" + i);
 
@@ -56,17 +56,3 @@ public class AtlasUpcomingScrape {
 	System.out.println("Dunzo!");
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

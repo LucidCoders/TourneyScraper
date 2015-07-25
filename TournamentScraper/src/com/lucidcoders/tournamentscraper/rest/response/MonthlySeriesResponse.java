@@ -16,15 +16,17 @@ public class MonthlySeriesResponse extends BaseQueryResponse {
     public void setResults(List<Result> results) {
 	this.results = results;
     }
-    
+
     /********************** Inner Classes ***********************/
-    
+
     public class Result {
 
-	@SerializedName("series/_text") private String seriesText;
+	@SerializedName("series/_text")
+	private String seriesText;
 	private String series;
 	private String casino;
-	@SerializedName("series/_source") private String seriesSource;
+	@SerializedName("series/_source")
+	private String seriesSource;
 	private String location;
 	private String dates;
 	private String status;
@@ -36,7 +38,7 @@ public class MonthlySeriesResponse extends BaseQueryResponse {
 	public void setSeriesText(String seriesText) {
 	    this.seriesText = seriesText;
 	}
-	
+
 	public String getSeries() {
 	    return series;
 	}

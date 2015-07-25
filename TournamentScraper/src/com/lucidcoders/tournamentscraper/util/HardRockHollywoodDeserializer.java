@@ -11,7 +11,7 @@ import com.google.gson.JsonParseException;
 import com.lucidcoders.tournamentscraper.rest.response.HardRockHollywoodResponse.Result;
 
 public class HardRockHollywoodDeserializer implements JsonDeserializer<Result> {
-    
+
     private static final String CURRENCY = "tournament_value_prices/_currency";
     private static final String PRICES = "tournament_value_prices";
     private static final String SOURCE = "tournament_value_prices/_source";
@@ -31,27 +31,27 @@ public class HardRockHollywoodDeserializer implements JsonDeserializer<Result> {
 	if (currency != null && !(currency instanceof JsonArray)) {
 	    JsonArray newCurrency = new JsonArray();
 	    newCurrency.add(currency);
-	    
+
 	    json.getAsJsonObject().remove(CURRENCY);
 	    json.getAsJsonObject().add(CURRENCY, newCurrency);
 	}
-	
+
 	if (price != null && !(price instanceof JsonArray)) {
 	    JsonArray newPrice = new JsonArray();
 	    newPrice.add(price);
-	    
+
 	    json.getAsJsonObject().remove(PRICES);
 	    json.getAsJsonObject().add(PRICES, newPrice);
 	}
-	
+
 	if (source != null && !(source instanceof JsonArray)) {
 	    JsonArray newSource = new JsonArray();
 	    newSource.add(source);
-	    
+
 	    json.getAsJsonObject().remove(SOURCE);
 	    json.getAsJsonObject().add(SOURCE, newSource);
 	}
-	
+
 	System.out.println("Result: " + json.toString());
 
 	return new Gson().fromJson(json, Result.class);

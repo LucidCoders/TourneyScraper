@@ -19,7 +19,7 @@ public class AtlasUpcomingResponse extends BaseQueryResponse {
     }
 
     /********************** Inner Classes ***********************/
-    
+
     public class Result {
 
 	@SerializedName("event_link/_text")
