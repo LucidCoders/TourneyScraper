@@ -38,10 +38,10 @@ public class AtlasDetailsScrape {
 
     public void execute() throws URISyntaxException, IOException {
 
-	mUrl = "http://www.pokeratlas.com/poker-tournament/harrahs-las-vegas-75-700pm-nl-holdem-poker-tournament?topid=101569-2015-07-26";
+	mUrl = "http://www.pokeratlas.com/poker-tournament/ballys-las-vegas-75-800pm-nl-holdem-poker-tournament?topid=84550-2015-07-26";
 	ImportIoRequest atlasDetailsRequest = new ImportIoRequest(mUrl);
 
-	HttpResponse response = atlasDetailsRequest.queryGet(Extractor.ATLAS_DETAILS);
+	HttpResponse response = atlasDetailsRequest.queryGet(Extractor.ATLAS_DETAILS_5_FIELDS);
 
 	if (response.getStatusLine().getStatusCode() == 200) {
 
@@ -49,6 +49,14 @@ public class AtlasDetailsScrape {
 
 	    AtlasDetailsResponse detailsResponse = gson.fromJson(atlasDetailsRequest.getResult(),
 		    AtlasDetailsResponse.class);
+
+	    if (detailsResponse.getResults().size() == 1) {
+		response = atlasDetailsRequest.queryGet(Extractor.ATLAS_DETAILS_6_FIELDS);
+
+		if (response.getStatusLine().getStatusCode() == 200) {
+		    detailsResponse = gson.fromJson(atlasDetailsRequest.getResult(), AtlasDetailsResponse.class);
+		}
+	    }
 
 	    TourneyDetails tourneyDetails = buildTourneyDetails(detailsResponse);
 	    new TourneyDetailImport(tourneyDetails).execute();
