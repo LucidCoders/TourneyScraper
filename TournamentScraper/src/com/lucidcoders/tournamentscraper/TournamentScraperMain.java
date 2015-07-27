@@ -13,7 +13,7 @@ public class TournamentScraperMain {
 //	new HardRockHollywoodScrape().execute();
 //	new PokerAtlasScrape().execute();
 //	new AtlasAreasScrape().execute();
-	new AtlasDetailsScrape().execute();
 //	new AtlasUpcomingScrape().execute();
+	new AtlasDetailsScrape().execute();
     }
 }

@@ -2,7 +2,6 @@ package com.lucidcoders.tournamentscraper.scrape;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +9,7 @@ import org.apache.http.HttpResponse;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.lucidcoders.tournamentscraper.gae.TourneyDetailImport;
 import com.lucidcoders.tournamentscraper.object.DetailGroup;
 import com.lucidcoders.tournamentscraper.object.DetailGroup.BuyInDetailsField;
 import com.lucidcoders.tournamentscraper.object.DetailGroup.FormatField;
@@ -18,26 +18,27 @@ import com.lucidcoders.tournamentscraper.object.DetailGroup.RegistrationField;
 import com.lucidcoders.tournamentscraper.object.DetailGroup.SizeField;
 import com.lucidcoders.tournamentscraper.object.DetailGroup.StructureField;
 import com.lucidcoders.tournamentscraper.object.DetailGroup.TournamentInfoField;
-import com.lucidcoders.tournamentscraper.object.TourneyDetails;
-import com.lucidcoders.tournamentscraper.object.TourneyDetails.BuyInDetails;
-import com.lucidcoders.tournamentscraper.object.TourneyDetails.Format;
-import com.lucidcoders.tournamentscraper.object.TourneyDetails.OtherInfo;
-import com.lucidcoders.tournamentscraper.object.TourneyDetails.Size;
-import com.lucidcoders.tournamentscraper.object.TourneyDetails.Structure;
-import com.lucidcoders.tournamentscraper.object.TourneyDetails.TournamentInfo;
-import com.lucidcoders.tournamentscraper.object.TourneyDetails.Registration;
 import com.lucidcoders.tournamentscraper.rest.Extractor;
 import com.lucidcoders.tournamentscraper.rest.ImportIoRequest;
 import com.lucidcoders.tournamentscraper.rest.response.AtlasDetailsResponse;
 import com.lucidcoders.tournamentscraper.rest.response.AtlasDetailsResponse.Result;
+import com.lucidcoders.tournamentscraper.util.Util;
+import com.lucidcoders.tourneyspot.backend.tourneyDetail.model.BuyInDetails;
+import com.lucidcoders.tourneyspot.backend.tourneyDetail.model.Format;
+import com.lucidcoders.tourneyspot.backend.tourneyDetail.model.OtherInfo;
+import com.lucidcoders.tourneyspot.backend.tourneyDetail.model.Registration;
+import com.lucidcoders.tourneyspot.backend.tourneyDetail.model.Size;
+import com.lucidcoders.tourneyspot.backend.tourneyDetail.model.Structure;
+import com.lucidcoders.tourneyspot.backend.tourneyDetail.model.TournamentInfo;
+import com.lucidcoders.tourneyspot.backend.tourneyDetail.model.TourneyDetails;
 
 public class AtlasDetailsScrape {
-    
+
     private String mUrl;
 
     public void execute() throws URISyntaxException, IOException {
-	
-	mUrl = "http://www.pokeratlas.com/poker-tournament/2015-wpt-deepstacks-chicagoland-event-14-1100-nl-holdem-no-limit-holdem-main-event-majestic-star?topid=105873-3896";
+
+	mUrl = "http://www.pokeratlas.com/poker-tournament/harrahs-las-vegas-75-700pm-nl-holdem-poker-tournament?topid=101569-2015-07-26";
 	ImportIoRequest atlasDetailsRequest = new ImportIoRequest(mUrl);
 
 	HttpResponse response = atlasDetailsRequest.queryGet(Extractor.ATLAS_DETAILS);
@@ -50,6 +51,7 @@ public class AtlasDetailsScrape {
 		    AtlasDetailsResponse.class);
 
 	    TourneyDetails tourneyDetails = buildTourneyDetails(detailsResponse);
+	    new TourneyDetailImport(tourneyDetails).execute();
 
 	    System.out.println(gson.toJson(tourneyDetails, TourneyDetails.class));
 	}
@@ -67,7 +69,7 @@ public class AtlasDetailsScrape {
 
 	    if (firstPass) {
 
-		buildTournamentDetails(tourneyDetails, eachResult);
+		buildEventDetails(tourneyDetails, eachResult);
 		firstPass = false;
 
 	    } else if (eachResult.getDetailGroup().equalsIgnoreCase(DetailGroup.TOURNAMENT_INFO.getGroupName())) {
@@ -104,14 +106,14 @@ public class AtlasDetailsScrape {
 	return tourneyDetails;
     }
 
-    private void buildTournamentDetails(TourneyDetails tourneyDetails, Result eachResult) {
-	
+    private void buildEventDetails(TourneyDetails tourneyDetails, Result eachResult) {
+
 	tourneyDetails.setCasinoName(eachResult.getCasinoText());
 	tourneyDetails.setEventName(eachResult.getEventName());
 	tourneyDetails.setSeriesName(eachResult.getSeriesText());
 	tourneyDetails.setBuyIn(eachResult.getBuyIn());
-	tourneyDetails.setEventDate(eachResult.getEventDate());
-	tourneyDetails.setEventTime(eachResult.getEventTime().replaceFirst("m", "m,"));
+	tourneyDetails.setEventDate(Util.dateToDateTime(eachResult.getEventDate()));
+	tourneyDetails.setEventTime(Util.formatEventTime(eachResult.getEventTime()));
 	tourneyDetails.setAddressText(eachResult.getAddressText());
 	tourneyDetails.setAddressUrl(eachResult.getAddressSource());
     }
@@ -120,7 +122,7 @@ public class AtlasDetailsScrape {
 
 	List<String> values = new ArrayList<String>();
 	TournamentInfoField currentField = null;
-	TournamentInfo tournamentInfo = tourneyDetails.new TournamentInfo();
+	TournamentInfo tournamentInfo = new TournamentInfo();
 
 	for (String string : eachResult.getDetails()) {
 
@@ -209,7 +211,7 @@ public class AtlasDetailsScrape {
 
 	List<String> values = new ArrayList<String>();
 	RegistrationField currentField = null;
-	Registration registration = tourneyDetails.new Registration();
+	Registration registration = new Registration();
 
 	for (String string : eachResult.getDetails()) {
 
@@ -257,7 +259,7 @@ public class AtlasDetailsScrape {
 
 	List<String> values = new ArrayList<String>();
 	BuyInDetailsField currentField = null;
-	BuyInDetails buyInDetails = tourneyDetails.new BuyInDetails();
+	BuyInDetails buyInDetails = new BuyInDetails();
 
 	for (String string : eachResult.getDetails()) {
 
@@ -305,7 +307,7 @@ public class AtlasDetailsScrape {
 
 	List<String> values = new ArrayList<String>();
 	FormatField currentField = null;
-	Format format = tourneyDetails.new Format();
+	Format format = new Format();
 
 	for (String string : eachResult.getDetails()) {
 
@@ -483,7 +485,7 @@ public class AtlasDetailsScrape {
 
 	List<String> values = new ArrayList<String>();
 	SizeField currentField = null;
-	Size size = tourneyDetails.new Size();
+	Size size = new Size();
 
 	for (String string : eachResult.getDetails()) {
 
@@ -521,7 +523,7 @@ public class AtlasDetailsScrape {
 
 	List<String> values = new ArrayList<String>();
 	StructureField currentField = null;
-	Structure structure = tourneyDetails.new Structure();
+	Structure structure = new Structure();
 
 	for (String string : eachResult.getDetails()) {
 
@@ -591,7 +593,7 @@ public class AtlasDetailsScrape {
 
 	List<String> values = new ArrayList<String>();
 	OtherInfoField currentField = null;
-	OtherInfo otherInfo = tourneyDetails.new OtherInfo();
+	OtherInfo otherInfo = new OtherInfo();
 
 	for (String string : eachResult.getDetails()) {
 
