@@ -17,6 +17,9 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
+import com.google.gson.Gson;
+import com.lucidcoders.tournamentscraper.rest.response.AtlasErrorResponse;
+
 public class ImportIoRequest {
 
     private RequestConfig requestConfig;
@@ -25,9 +28,13 @@ public class ImportIoRequest {
     private final String USER_AGENT = "Mozilla/5.0";
     private final String USER_ID = "9edd0fab-f45b-4fb4-b6f6-8418d65b44fe";
     private final String API_KEY = "9edd0fabf45b4fb4b6f68418d65b44feda925482c0aa538685fe64ba2428e1908652f9b260beec9e08b81118d90cdb4b583229745e0de1f372998577a896c18c2768cce833339466010da98ccbc7ce1c";
+    
     private String mTargetUrl;
     private String mUrl;
     private String mResult;
+    
+    private AtlasErrorResponse mAtlasErrorResponse;
+    private boolean mIsAtlasError = true;
 
     public ImportIoRequest(String targetUrl) {
 	mTargetUrl = targetUrl;
@@ -77,6 +84,14 @@ public class ImportIoRequest {
 
 	mResult = EntityUtils.toString(response.getEntity(), "UTF-8");
 	System.out.println(mResult);
+	
+	try {
+	    mAtlasErrorResponse = new Gson().fromJson(mResult, AtlasErrorResponse.class);
+	} catch (Exception e) {
+	    e.printStackTrace();
+	}
+	
+	mIsAtlasError = mAtlasErrorResponse != null ? true : false;
 
 	return response;
     }
@@ -110,5 +125,13 @@ public class ImportIoRequest {
 
     public String getResult() {
 	return mResult;
+    }
+    
+    public AtlasErrorResponse getAtlasError() {
+	return mAtlasErrorResponse;
+    }
+    
+    public boolean isAtlasError() {
+	return mIsAtlasError;
     }
 }

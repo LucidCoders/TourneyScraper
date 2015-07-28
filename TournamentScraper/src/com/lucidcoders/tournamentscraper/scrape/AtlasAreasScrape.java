@@ -38,19 +38,23 @@ public class AtlasAreasScrape {
 	}
 
 	if (response.getStatusLine().getStatusCode() == 200) {
-	    AtlasAreasResponse areasResponse = new Gson().fromJson(atlasAreasRequest.getResult().toString(),
-		    AtlasAreasResponse.class);
+	    if (!atlasAreasRequest.isAtlasError()) {
+		AtlasAreasResponse areasResponse = new Gson().fromJson(atlasAreasRequest.getResult().toString(),
+			AtlasAreasResponse.class);
 
-	    String testResponse = new Gson().toJson(areasResponse, AtlasAreasResponse.class);
-	    System.out.println("Testing: " + testResponse);
+		String testResponse = new Gson().toJson(areasResponse, AtlasAreasResponse.class);
+		System.out.println("Testing: " + testResponse);
 
-	    int count = 1;
-	    for (Result resultSet : areasResponse.getResults()) {
-		for (String area : resultSet.getArea()) {
-		    System.out.println(count + ": " + area);
-		    mAreaUrls.add(area);
-		    count++;
+		for (Result resultSet : areasResponse.getResults()) {
+		    for (String area : resultSet.getArea()) {
+			mAreaUrls.add(area);
+		    }
 		}
+	    } else {
+		logger.appendLogEntry("Failed response from AtlasAreas request"
+			+ " - " + areasUrl
+			+ " - errorType : " + atlasAreasRequest.getAtlasError().getErrorType()
+			+ " - error : " + atlasAreasRequest.getAtlasError().getError());
 	    }
 	} else {
 	    logger.appendLogEntry("Failed response from AtlasAreas request : " + areasUrl);
@@ -63,35 +67,3 @@ public class AtlasAreasScrape {
 	return mAreaUrls;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
