@@ -10,7 +10,7 @@ import com.lucidcoders.tournamentscraper.rest.Extractor;
 import com.lucidcoders.tournamentscraper.rest.ImportIoRequest;
 import com.lucidcoders.tournamentscraper.rest.response.AtlasUpcomingResponse;
 import com.lucidcoders.tournamentscraper.rest.response.AtlasUpcomingResponse.Result;
-import com.lucidcoders.tournamentscraper.util.MyBufferedWriter;
+import com.lucidcoders.tournamentscraper.util.MyLogger;
 
 public class AtlasUpcomingScrape {
 
@@ -22,16 +22,16 @@ public class AtlasUpcomingScrape {
 	HttpResponse response = atlasUpcomingRequest.queryGet(Extractor.ATLAS_UPCOMING);
 
 	if (response.getStatusLine().getStatusCode() == 200) {
-	    MyBufferedWriter writer = new MyBufferedWriter();
-	    writer.writeToFile("*** EVENT LINK RESULTS ***");
-	    writer.appendToFile("**************************\n");
+	    MyLogger writer = new MyLogger();
+	    writer.writeToLog("*** EVENT LINK RESULTS ***");
+	    writer.appendToLog("**************************\n");
 
 	    AtlasUpcomingResponse upcomingResponse = new Gson().fromJson(atlasUpcomingRequest.getResult(),
 		    AtlasUpcomingResponse.class);
 
 	    int count = 1;
 	    for (Result result : upcomingResponse.getResults()) {
-		writer.appendToFile("EventLink #" + count + ": " + result.getEventLink());
+		writer.appendToLog("EventLink #" + count + ": " + result.getEventLink());
 		count++;
 	    }
 
@@ -47,7 +47,7 @@ public class AtlasUpcomingScrape {
 			atlasUpcomingScrollRequest.getResult(), AtlasUpcomingResponse.class);
 
 		for (Result result : upcomingScrollResponse.getResults()) {
-		    writer.appendToFile("EventLink #" + count + ": " + result.getEventLink());
+		    writer.appendToLog("EventLink #" + count + ": " + result.getEventLink());
 		    count++;
 		}
 	    }

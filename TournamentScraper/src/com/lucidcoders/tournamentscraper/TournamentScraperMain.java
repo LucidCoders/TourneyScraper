@@ -3,17 +3,63 @@ package com.lucidcoders.tournamentscraper;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
-import com.lucidcoders.tournamentscraper.scrape.AtlasDetailsScrape;
+import com.lucidcoders.tournamentscraper.scrape.AtlasFullScrape;
+import com.lucidcoders.tournamentscraper.util.MyLogger;
 
 
 public class TournamentScraperMain {
 
     public static void main(String[] args) throws URISyntaxException, IOException {
-//	new MonthlySeriesScrape().execute();
-//	new HardRockHollywoodScrape().execute();
-//	new PokerAtlasScrape().execute();
-//	new AtlasAreasScrape().execute();
-//	new AtlasUpcomingScrape().execute();
-	new AtlasDetailsScrape().execute();
+	
+	MyLogger logger = MyLogger.getInstance();
+	if (!logger.initialize()) return;
+	logger.writeToLog("*********************************** ATLAS SCRAPE LOG ***********************************");
+	logger.appendToLog("****************************************************************************************");
+	
+	new AtlasFullScrape().execute();
+	
+	logger.closeFile();
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

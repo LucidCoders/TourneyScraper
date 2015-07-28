@@ -1,5 +1,6 @@
 package com.lucidcoders.tournamentscraper.util;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.google.api.client.util.DateTime;
@@ -28,5 +29,9 @@ public class Util {
 	}
 	
 	return eventTime.replaceFirst("m", "m,");
+    }
+    
+    public static String getLogTimeStamp() {
+	return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + ": ";
     }
 }

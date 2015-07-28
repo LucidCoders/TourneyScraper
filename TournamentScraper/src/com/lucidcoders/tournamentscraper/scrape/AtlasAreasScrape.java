@@ -12,16 +12,30 @@ import com.lucidcoders.tournamentscraper.rest.Extractor;
 import com.lucidcoders.tournamentscraper.rest.ImportIoRequest;
 import com.lucidcoders.tournamentscraper.rest.response.AtlasAreasResponse;
 import com.lucidcoders.tournamentscraper.rest.response.AtlasAreasResponse.Result;
+import com.lucidcoders.tournamentscraper.util.MyLogger;
 
 public class AtlasAreasScrape {
 
-    private List<String> areaUrls = new ArrayList<String>();
+    private List<String> mAreaUrls = new ArrayList<String>();
 
-    public void execute() throws URISyntaxException, IOException {
+    public void execute() {
+	MyLogger logger = MyLogger.getInstance();
+	logger.appendLogEntry("Begin Atlas Areas Scrape...", true);
+	
+	String areasUrl = "http://www.pokeratlas.com/areas";
 
-	ImportIoRequest atlasAreasRequest = new ImportIoRequest("http://www.pokeratlas.com/areas");
+	ImportIoRequest atlasAreasRequest = new ImportIoRequest(areasUrl);
 
-	HttpResponse response = atlasAreasRequest.queryGet(Extractor.ATLAS_AREAS);
+	HttpResponse response;
+	try {
+	    response = atlasAreasRequest.queryGet(Extractor.ATLAS_AREAS);
+	} catch (URISyntaxException | IOException e) {
+	    e.printStackTrace();
+	    logger.appendLogEntry(
+		    "Failed to send AtlasAreas request : " + areasUrl + " : " + e.getClass() + " : " + e.getMessage());
+	    logger.appendLogEntry("Complete Atlas Areas Scrape", true);
+	    return;
+	}
 
 	if (response.getStatusLine().getStatusCode() == 200) {
 	    AtlasAreasResponse areasResponse = new Gson().fromJson(atlasAreasRequest.getResult().toString(),
@@ -34,14 +48,50 @@ public class AtlasAreasScrape {
 	    for (Result resultSet : areasResponse.getResults()) {
 		for (String area : resultSet.getArea()) {
 		    System.out.println(count + ": " + area);
-		    areaUrls.add(area);
+		    mAreaUrls.add(area);
 		    count++;
 		}
 	    }
+	} else {
+	    logger.appendLogEntry("Failed response from AtlasAreas request : " + areasUrl);
 	}
+	
+	logger.appendLogEntry("Complete Atlas Areas Scrape", true);
     }
 
     public List<String> getAreaUrls() {
-	return areaUrls;
+	return mAreaUrls;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
