@@ -80,8 +80,6 @@ public class ImportIoRequest {
 	HttpClient client = HttpClientBuilder.create().setDefaultRequestConfig(requestConfig).build();
 	HttpResponse response = client.execute(request);
 
-	System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-
 	mResult = EntityUtils.toString(response.getEntity(), "UTF-8");
 	System.out.println(mResult);
 	
@@ -91,7 +89,7 @@ public class ImportIoRequest {
 	    e.printStackTrace();
 	}
 	
-	mIsAtlasError = mAtlasErrorResponse != null ? true : false;
+	mIsAtlasError = mAtlasErrorResponse.getErrorType() != null;
 
 	return response;
     }

@@ -20,9 +20,9 @@ public class MyLogger {
     public boolean initialize() {
 	try {
 	    String month = new SimpleDateFormat("yyyy_MM").format(new Date());
-	    String date = new SimpleDateFormat("yyyy_MM_dd").format(new Date());
+	    String date = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss").format(new Date());
 	    
-	    String directory = "C:/Dev/PokerAtlas/Crawler/" + month;
+	    String directory = "C:/Users/Queezy/Dev/PokerAtlas/Crawler/" + month;
 
 	    File dir = new File(directory);
 	    if (!dir.exists()) {

@@ -20,7 +20,7 @@ public class AtlasAreasScrape {
 
     public void execute() {
 	MyLogger logger = MyLogger.getInstance();
-	logger.appendLogEntry("Begin Atlas Areas Scrape...", true);
+	logger.appendLogEntry("Begin Atlas Areas Scrape...");
 	
 	String areasUrl = "http://www.pokeratlas.com/areas";
 
@@ -33,7 +33,7 @@ public class AtlasAreasScrape {
 	    e.printStackTrace();
 	    logger.appendLogEntry(
 		    "Failed to send AtlasAreas request : " + areasUrl + " : " + e.getClass() + " : " + e.getMessage());
-	    logger.appendLogEntry("Complete Atlas Areas Scrape", true);
+	    logger.appendLogEntry("Complete Atlas Areas Scrape");
 	    return;
 	}
 
@@ -41,9 +41,6 @@ public class AtlasAreasScrape {
 	    if (!atlasAreasRequest.isAtlasError()) {
 		AtlasAreasResponse areasResponse = new Gson().fromJson(atlasAreasRequest.getResult().toString(),
 			AtlasAreasResponse.class);
-
-		String testResponse = new Gson().toJson(areasResponse, AtlasAreasResponse.class);
-		System.out.println("Testing: " + testResponse);
 
 		for (Result resultSet : areasResponse.getResults()) {
 		    for (String area : resultSet.getArea()) {
@@ -60,7 +57,7 @@ public class AtlasAreasScrape {
 	    logger.appendLogEntry("Failed response from AtlasAreas request : " + areasUrl);
 	}
 	
-	logger.appendLogEntry("Complete Atlas Areas Scrape", true);
+	logger.appendLogEntry("Complete Atlas Areas Scrape");
     }
 
     public List<String> getAreaUrls() {
