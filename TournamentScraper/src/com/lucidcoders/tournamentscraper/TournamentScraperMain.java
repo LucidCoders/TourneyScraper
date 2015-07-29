@@ -13,8 +13,8 @@ public class TournamentScraperMain {
 	
 	MyLogger logger = MyLogger.getInstance();
 	if (!logger.initialize()) return;
-	logger.writeToLog("**************************************** ATLAS SCRAPE LOG ****************************************");
-	logger.appendToLog("**************************************************************************************************\n");
+	logger.writeToLog("**************************************** ATLAS FULL SCRAPE LOG ****************************************");
+	logger.appendToLog("*******************************************************************************************************\n");
 	
 	new AtlasFullScrape().execute();
 	

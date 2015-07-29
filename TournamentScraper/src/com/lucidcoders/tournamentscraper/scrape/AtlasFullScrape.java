@@ -3,6 +3,7 @@ package com.lucidcoders.tournamentscraper.scrape;
 import java.util.List;
 
 import com.lucidcoders.tournamentscraper.util.MyLogger;
+import com.lucidcoders.tourneyspot.backend.tourneyDetail.model.TourneyDetails;
 
 public class AtlasFullScrape {
 
@@ -26,14 +27,28 @@ public class AtlasFullScrape {
 		
 		List<String> eventLinks = upcomingScrape.getEventLinks();
 		if (eventLinks.size() > 0) {
+		    
 		    logger.appendLogEntry("********** Success getting Event Links : " + url + " **********\n");
-		    // TODO get event/tourney details
+		    
+		    AtlasDetailsScrape detailScrape = new AtlasDetailsScrape(eventLinks);
+		    detailScrape.execute();
+		    
+		    List<TourneyDetails> eventDetails = detailScrape.getEventDetails();
+		    if (eventDetails.size() > 0) {
+			
+			logger.appendLogEntry("********** Success getting Event Details : " + url + " **********\n");
+			
+			//TODO Update/Insert EventDetails into GAE datastore
+			
+		    } else {
+			logger.appendLogEntry("********** Failed to get Event Details : " + url + " **********\n");
+		    }
 		    
 		} else {
 		    logger.appendLogEntry("********** Failed to get Event Links : " + url + " **********\n");
 		}
 		
-		break;
+		break; //TODO breaking after one area for testing.  Remove for full scrape
 	    }
 	    
 	} else {

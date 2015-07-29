@@ -23,10 +23,7 @@ public class AtlasUpcomingScrape {
     
     public AtlasUpcomingScrape(String url, int pageCount) {
 	
-//	http://www.pokeratlas.com/biloxi-mississippi
-//	http://www.pokeratlas.com/poker-tournaments/biloxi-mississippi/upcoming
-	mBaseUrl = "http://www.pokeratlas.com/poker-tournaments/" 
-		+ url.replace("http://www.pokeratlas.com/", "") 
+	mBaseUrl = "http://www.pokeratlas.com/poker-tournaments/" + url.replace("http://www.pokeratlas.com/", "")
 		+ "/upcoming";
 	mScrollUrl = mBaseUrl + "?page=";
 	mPageCount = pageCount;
@@ -115,30 +112,3 @@ public class AtlasUpcomingScrape {
 	return mEventLinks;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
