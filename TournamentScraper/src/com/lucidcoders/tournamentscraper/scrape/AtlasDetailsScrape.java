@@ -20,6 +20,7 @@ public class AtlasDetailsScrape {
 
     private List<String> mUrls;
     private List<TourneyDetails> mEventDetails = new ArrayList<TourneyDetails>();
+    private List<String> mFailedUrls = new ArrayList<String>();
     
     public AtlasDetailsScrape(List<String> urls) {
 	mUrls = urls;
@@ -43,6 +44,7 @@ public class AtlasDetailsScrape {
 		e.printStackTrace();
 		logger.appendLogEntry("Failed to send AtlasDetails request : " + url + " : " + e.getClass() + " : "
 			+ e.getMessage());
+		mFailedUrls.add(url);
 		continue;
 	    }
 
@@ -63,6 +65,7 @@ public class AtlasDetailsScrape {
 			    e.printStackTrace();
 			    logger.appendLogEntry("Failed to send AtlasDetails request : " + url + " : " + e.getClass()
 				    + " : " + e.getMessage());
+			    mFailedUrls.add(url);
 			    continue;
 			}
 
@@ -75,11 +78,13 @@ public class AtlasDetailsScrape {
 				logger.appendLogEntry("Failed response from AtlasDetails request" + " - " + url
 					+ " - errorType : " + atlasDetailsRequest.getAtlasError().getErrorType()
 					+ " - error : " + atlasDetailsRequest.getAtlasError().getError());
+				mFailedUrls.add(url);
 				continue;
 			    }
 
 			} else {
 			    logger.appendLogEntry("Failed response from AtlasDetails request : " + url);
+			    mFailedUrls.add(url);
 			    continue;
 			}
 		    }
@@ -88,11 +93,13 @@ public class AtlasDetailsScrape {
 		    mEventDetails.add(tourneyDetails);
 		    
 		} else {
+		    mFailedUrls.add(url);
 		    logger.appendLogEntry("Failed response from AtlasDetails request" + " - " + url
 				+ " - errorType : " + atlasDetailsRequest.getAtlasError().getErrorType()
 				+ " - error : " + atlasDetailsRequest.getAtlasError().getError());
 		}
 	    } else {
+		mFailedUrls.add(url);
 		logger.appendLogEntry("Failed response from AtlasDetails request : " + url);
 	    }
 	}
@@ -102,5 +109,9 @@ public class AtlasDetailsScrape {
     
     public List<TourneyDetails> getEventDetails() {
 	return mEventDetails;
+    }
+    
+    public List<String> getFailedUrls() {
+	return mFailedUrls;
     }
 }

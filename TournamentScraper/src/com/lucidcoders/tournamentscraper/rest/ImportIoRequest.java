@@ -1,6 +1,7 @@
 package com.lucidcoders.tournamentscraper.rest;
 
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,7 @@ import com.lucidcoders.tournamentscraper.rest.response.AtlasErrorResponse;
 public class ImportIoRequest {
 
     private RequestConfig requestConfig;
-    private final int TIMEOUT = 15 * 1000;
+    private final int TIMEOUT = 10 * 1000;
 
     private final String USER_AGENT = "Mozilla/5.0";
     private final String USER_ID = "9edd0fab-f45b-4fb4-b6f6-8418d65b44fe";
@@ -49,12 +50,13 @@ public class ImportIoRequest {
 	builder.addParameter("input/webpage/url", mTargetUrl);
 	builder.addParameter("_user", USER_ID);
 	builder.addParameter("_apikey", API_KEY);
-
-	HttpGet request = new HttpGet(builder.build());
+	
+	URI urlWithParams = builder.build();
+	HttpGet request = new HttpGet(urlWithParams);
 	request.addHeader("User-Agent", USER_AGENT);
 	request.addHeader("content-type", "application/json");
 
-	System.out.println("\nSending 'GET' request to URL : " + builder.build());
+	System.out.println("\nSending 'GET' request to URL : " + urlWithParams);
 	return executeGet(request);
     }
 
@@ -67,11 +69,12 @@ public class ImportIoRequest {
 	builder.addParameter("_user", USER_ID);
 	builder.addParameter("_apikey", API_KEY);
 
-	HttpGet request = new HttpGet(builder.build());
+	URI urlWithParams = builder.build();
+	HttpGet request = new HttpGet(urlWithParams);
 	request.addHeader("User-Agent", USER_AGENT);
 	request.addHeader("content-type", "application/json");
 
-	System.out.println("\nSending 'GET' request to URL : " + builder.build());
+	System.out.println("\nSending 'GET' request to URL : " + urlWithParams);
 	return executeGet(request);
     }
 
@@ -81,7 +84,7 @@ public class ImportIoRequest {
 	HttpResponse response = client.execute(request);
 
 	mResult = EntityUtils.toString(response.getEntity(), "UTF-8");
-	System.out.println(mResult);
+//	System.out.println(mResult);
 	
 	try {
 	    mAtlasErrorResponse = new Gson().fromJson(mResult, AtlasErrorResponse.class);

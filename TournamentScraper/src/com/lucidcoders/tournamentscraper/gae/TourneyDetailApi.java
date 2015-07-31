@@ -63,6 +63,14 @@ public class TourneyDetailApi {
 	    e.printStackTrace();
 	}
     }
+    
+    public void removeAllEvents() {
+	try {
+	    service.removeAllEvents().execute();
+	} catch (IOException e) {
+	    e.printStackTrace();
+	}
+    }
 }
 
 
