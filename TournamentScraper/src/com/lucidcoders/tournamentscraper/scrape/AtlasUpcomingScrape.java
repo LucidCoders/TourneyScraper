@@ -58,7 +58,7 @@ public class AtlasUpcomingScrape {
 		    mEventLinks.add(result.getEventLink());
 		}
 
-		for (int i = 1; i <= mPageCount; i++) {
+		for (int i = 1; i < mPageCount; i++) {
 		    
 		    String scrollUrl = mScrollUrl + i;
 		    ImportIoRequest atlasUpcomingScrollRequest = new ImportIoRequest(scrollUrl);

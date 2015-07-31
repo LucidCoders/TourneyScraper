@@ -2,6 +2,7 @@ package com.lucidcoders.tournamentscraper.scrape;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.http.HttpResponse;
@@ -18,7 +19,7 @@ import com.lucidcoders.tourneyspot.backend.tourneyDetail.model.TourneyDetails;
 public class AtlasDetailsScrape {
 
     private List<String> mUrls;
-    private List<TourneyDetails> mEventDetails;
+    private List<TourneyDetails> mEventDetails = new ArrayList<TourneyDetails>();
     
     public AtlasDetailsScrape(List<String> urls) {
 	mUrls = urls;
@@ -49,7 +50,7 @@ public class AtlasDetailsScrape {
 
 		if (!atlasDetailsRequest.isAtlasError()) {
 
-		    Gson gson = new GsonBuilder().disableHtmlEscaping().setDateFormat("EEEE, MMM d, yyyy").create();
+		    Gson gson = new GsonBuilder().setDateFormat("EEEE, MMM d, yyyy").create();
 
 		    AtlasDetailsResponse detailsResponse = gson.fromJson(atlasDetailsRequest.getResult(),
 			    AtlasDetailsResponse.class);

@@ -23,7 +23,7 @@ import com.lucidcoders.tournamentscraper.rest.response.AtlasErrorResponse;
 public class ImportIoRequest {
 
     private RequestConfig requestConfig;
-    private final int TIMEOUT = 30 * 1000;
+    private final int TIMEOUT = 15 * 1000;
 
     private final String USER_AGENT = "Mozilla/5.0";
     private final String USER_ID = "9edd0fab-f45b-4fb4-b6f6-8418d65b44fe";

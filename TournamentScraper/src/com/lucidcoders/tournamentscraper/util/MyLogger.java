@@ -13,7 +13,9 @@ public class MyLogger {
     private BufferedWriter mBufferedWriter;
 
     public static synchronized MyLogger getInstance() {
-	if (mMyLogger == null) mMyLogger = new MyLogger();
+	if (mMyLogger == null) {
+	    mMyLogger = new MyLogger();
+	}
 	return mMyLogger;
     }
     

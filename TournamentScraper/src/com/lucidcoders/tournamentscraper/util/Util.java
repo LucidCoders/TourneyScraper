@@ -15,7 +15,7 @@ public class Util {
     }
     
     public static DateTime dateToDateTime(Date date) {
-	return new DateTime(true, date.getTime(), 0);
+	return new DateTime(date.getTime());
     }
     
     public static String formatEventTime(String eventTime) {

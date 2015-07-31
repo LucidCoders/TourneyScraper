@@ -4,21 +4,15 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 
 import com.lucidcoders.tournamentscraper.scrape.AtlasFullScrape;
-import com.lucidcoders.tournamentscraper.util.MyLogger;
-
+import com.lucidcoders.tournamentscraper.scrape.AtlasQuery;
 
 public class TournamentScraperMain {
 
     public static void main(String[] args) throws URISyntaxException, IOException {
 	
-	MyLogger logger = MyLogger.getInstance();
-	if (!logger.initialize()) return;
-	logger.writeToLog("**************************************** ATLAS FULL SCRAPE LOG ****************************************");
-	logger.appendToLog("*******************************************************************************************************\n");
+//	new AtlasFullScrape().execute();
+	new AtlasQuery().execute();
 	
-	new AtlasFullScrape().execute();
-	
-	logger.closeFile();
     }
 }
 
