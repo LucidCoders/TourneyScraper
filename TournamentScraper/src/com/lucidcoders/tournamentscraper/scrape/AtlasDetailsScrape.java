@@ -52,7 +52,7 @@ public class AtlasDetailsScrape {
 
 		if (!atlasDetailsRequest.isAtlasError()) {
 
-		    Gson gson = new GsonBuilder().setDateFormat("EEEE, MMM d, yyyy").create();
+		    Gson gson = new GsonBuilder().setDateFormat("EEEE, MMM d, yyyy").disableHtmlEscaping().create();
 
 		    AtlasDetailsResponse detailsResponse = gson.fromJson(atlasDetailsRequest.getResult(),
 			    AtlasDetailsResponse.class);

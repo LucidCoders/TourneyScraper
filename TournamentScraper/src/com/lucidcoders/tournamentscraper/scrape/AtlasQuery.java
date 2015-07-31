@@ -14,7 +14,7 @@ public class AtlasQuery {
 	
 	MyLogger logger = MyLogger.getInstance();
 	if (!logger.initialize()) return;
-	logger.writeToLog("**************************************** ATLAS QUERY LOG ****************************************");
+	logger.writeToLog("******************************************* ATLAS QUERY LOG *******************************************");
 	logger.appendToLog("*******************************************************************************************************\n");
 
 	List<TourneyDetails> eventDetails = TourneyDetailApi.getInstance().listEvents();
