@@ -84,7 +84,7 @@ public class ImportIoRequest {
 	HttpResponse response = client.execute(request);
 
 	mResult = EntityUtils.toString(response.getEntity(), "UTF-8");
-//	System.out.println(mResult);
+	System.out.println(mResult);
 	
 	try {
 	    mAtlasErrorResponse = new Gson().fromJson(mResult, AtlasErrorResponse.class);

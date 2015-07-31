@@ -21,9 +21,9 @@ public class AtlasUpcomingScrape {
     private String mScrollUrl;
     private List<String> mEventLinks = new ArrayList<String>();
     
-    public AtlasUpcomingScrape(String url, int pageCount) {
+    public AtlasUpcomingScrape(String areaUrl, int pageCount) {
 	
-	mBaseUrl = "http://www.pokeratlas.com/poker-tournaments/" + url.replace("http://www.pokeratlas.com/", "")
+	mBaseUrl = "http://www.pokeratlas.com/poker-tournaments/" + areaUrl.replace("http://www.pokeratlas.com/", "")
 		+ "/upcoming";
 	mScrollUrl = mBaseUrl + "?page=";
 	mPageCount = pageCount;
