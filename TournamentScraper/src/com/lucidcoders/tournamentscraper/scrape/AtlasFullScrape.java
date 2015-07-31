@@ -73,7 +73,7 @@ public class AtlasFullScrape {
 	    }
 	    
 	    if (failedEventUrls.size() > 0) {
-		logger.appendLogEntry("********** Begin Failed Events Retry **********\n");
+		logger.appendLogEntry("********** Begin Failed Events Retry **********");
 		
 		AtlasDetailsScrape detailScrape = new AtlasDetailsScrape(failedEventUrls);
 		detailScrape.execute();

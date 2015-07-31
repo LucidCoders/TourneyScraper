@@ -3,6 +3,7 @@ package com.lucidcoders.tournamentscraper.scrape;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.lucidcoders.tournamentscraper.rest.response.AtlasPokerRoomsResponse.Result;
 import com.lucidcoders.tournamentscraper.util.MyLogger;
 
 public class AtlasCasinoFullScrape {
@@ -22,23 +23,57 @@ public class AtlasCasinoFullScrape {
 	    
 	    logger.appendLogEntry("********** Success getting Area Urls **********\n");
 	    
-	    List<String> pokerRoomUrls = new ArrayList<String>();
+	    List<Result> pokerRooms = new ArrayList<Result>();
+	    List<String> failedRoomsUrls = new ArrayList<String>();
 	    
 	    for (String url : areaUrls) {
-		//TODO make Casino
 		
 		AtlasPokerRoomsScrape pokerRoomsScrape = new AtlasPokerRoomsScrape(url);
 		pokerRoomsScrape.execute();
+		
+		if (pokerRoomsScrape.getPokerRooms().size() > 0) {
+		    
+		    logger.appendLogEntry("********** Success getting Poker Rooms : " + url + " **********\n");
+		    
+		    for (Result pokerRoom : pokerRoomsScrape.getPokerRooms()) {
+			pokerRooms.add(pokerRoom);
+		    }
+		    
+		} else {
+		    failedRoomsUrls.add(url);
+		    logger.appendLogEntry("********** Failed getting Poker Rooms : " + url + " **********\n");
+		}
 	    }
+	    
+	    if (failedRoomsUrls.size() > 0) {
+		logger.appendLogEntry("********** Begin Failed Poker Rooms Retry **********");
+
+		for (String url : failedRoomsUrls) {
+
+		    AtlasPokerRoomsScrape pokerRoomsScrape = new AtlasPokerRoomsScrape(url);
+		    pokerRoomsScrape.execute();
+
+		    if (pokerRoomsScrape.getPokerRooms().size() > 0) {
+
+			logger.appendLogEntry("********** Success getting Poker Rooms on Retry : " + url + " **********\n");
+
+			for (Result pokerRoom : pokerRoomsScrape.getPokerRooms()) {
+			    pokerRooms.add(pokerRoom);
+			}
+
+		    } else {
+			logger.appendLogEntry("********** Failed getting Poker Rooms on Retry : " + url + " **********\n");
+		    }
+		}
+		
+		logger.appendLogEntry("********** Complete Failed Poker Rooms Retry **********");
+	    }
+	    
+	    // TODO take pokerRooms Result list and query the Details
 	    
 	} else {
 	    logger.appendLogEntry("********** Failed to get Area Urls **********\n");
 	}
-	
-	
-	
-	
-	
 	logger.closeFile();
     }
 }

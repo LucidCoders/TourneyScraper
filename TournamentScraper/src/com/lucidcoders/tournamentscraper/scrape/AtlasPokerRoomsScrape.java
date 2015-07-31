@@ -2,6 +2,8 @@ package com.lucidcoders.tournamentscraper.scrape;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.http.HttpResponse;
 
@@ -17,6 +19,7 @@ import com.lucidcoders.tournamentscraper.util.PokerRoomDeserializer;
 public class AtlasPokerRoomsScrape {
 
     private String mUrl;
+    private List<Result> mPokerRooms = new ArrayList<Result>();
     
     public AtlasPokerRoomsScrape(String areaUrl) {
 	mUrl = "http://www.pokeratlas.com/poker-rooms/" + areaUrl.replace("http://www.pokeratlas.com/", "");
@@ -50,13 +53,8 @@ public class AtlasPokerRoomsScrape {
 		AtlasPokerRoomsResponse roomsResponse = gson.fromJson(pokerRoomsRequest.getResult(),
 			AtlasPokerRoomsResponse.class);
 		
-		for (Result pokerRoom : roomsResponse.getResults()) {
-		    
-		    //TODO getCasinoDetails
-		    
-		    pokerRoom.getCasinoUrl();
-		}
-
+		mPokerRooms = roomsResponse.getResults();
+		
 //		String testResponse = gson.toJson(roomsResponse, AtlasPokerRoomsResponse.class);
 //		System.out.println("Testing: " + testResponse);
 
@@ -71,6 +69,10 @@ public class AtlasPokerRoomsScrape {
 	}
 	
 	logger.appendLogEntry("Complete Atlas Poker Rooms Scrape : " + mUrl);
+    }
+    
+    public List<Result> getPokerRooms() {
+	return mPokerRooms;
     }
 }
 
