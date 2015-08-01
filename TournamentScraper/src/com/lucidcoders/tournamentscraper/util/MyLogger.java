@@ -25,8 +25,8 @@ public class MyLogger {
 	    String date = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss").format(new Date());
 	    
 	    //TODO undo this later
-//	    String directory = "C:/Users/Queezy/Dev/PokerAtlas/Crawler/" + month;
-	    String directory = "C:/Dev/PokerAtlas/Crawler/" + month;
+	    String directory = "C:/Users/Queezy/Dev/PokerAtlas/Crawler/" + month;
+//	    String directory = "C:/Dev/PokerAtlas/Crawler/" + month;
 
 	    File dir = new File(directory);
 	    if (!dir.exists()) {

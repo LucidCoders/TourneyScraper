@@ -8,17 +8,18 @@ import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
 import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
 import com.google.api.client.json.jackson2.JacksonFactory;
-import com.lucidcoders.tourneyspot.backend.tourneyDetail.TourneyDetail;
-import com.lucidcoders.tourneyspot.backend.tourneyDetail.model.TourneyDetails;
+import com.google.api.client.util.DateTime;
+import com.lucidcoders.tourneyspot.backend.tourneyDetailApi.TourneyDetailApi;
+import com.lucidcoders.tourneyspot.backend.tourneyDetailApi.model.TourneyDetails;
 
-public class TourneyDetailApi {
+public class TourneyDetailService {
 
-    private static TourneyDetailApi mDetailApi;
-    private TourneyDetail service = null;
+    private static TourneyDetailService mDetailApi;
+    private TourneyDetailApi service = null;
     
-    public static synchronized TourneyDetailApi getInstance() {
+    public static synchronized TourneyDetailService getInstance() {
 	if (mDetailApi == null) {
-	    mDetailApi = new TourneyDetailApi();
+	    mDetailApi = new TourneyDetailService();
 	    mDetailApi.build();
 	}
 	
@@ -27,7 +28,7 @@ public class TourneyDetailApi {
 
     private void build() {
 	try {
-	    TourneyDetail.Builder builder = new TourneyDetail.Builder(GoogleNetHttpTransport.newTrustedTransport(),
+	    TourneyDetailApi.Builder builder = new TourneyDetailApi.Builder(GoogleNetHttpTransport.newTrustedTransport(),
 	    	JacksonFactory.getDefaultInstance(), null)
 	    .setRootUrl("http://localhost:8080/_ah/api/")
 	    .setApplicationName("TourneyScraper")
@@ -46,9 +47,10 @@ public class TourneyDetailApi {
 	}
     }
     
-    public List<TourneyDetails> listEvents() {
+    public List<TourneyDetails> listEvents(String casinoId, DateTime eventDate) {
 	try {
-	    return service.listEvents().execute().getItems();
+//	    return service.listEvents().execute().getItems();
+	    return service.listEvents().setCasinoId(casinoId).set("eventDate", eventDate).execute().getItems();
 	} catch (IOException e) {
 	    e.printStackTrace();
 	    return null;

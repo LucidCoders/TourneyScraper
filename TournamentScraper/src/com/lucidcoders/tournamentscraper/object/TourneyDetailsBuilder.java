@@ -13,14 +13,14 @@ import com.lucidcoders.tournamentscraper.object.DetailGroup.TournamentInfoField;
 import com.lucidcoders.tournamentscraper.rest.response.AtlasDetailsResponse;
 import com.lucidcoders.tournamentscraper.rest.response.AtlasDetailsResponse.Result;
 import com.lucidcoders.tournamentscraper.util.Util;
-import com.lucidcoders.tourneyspot.backend.tourneyDetail.model.BuyInDetails;
-import com.lucidcoders.tourneyspot.backend.tourneyDetail.model.Format;
-import com.lucidcoders.tourneyspot.backend.tourneyDetail.model.OtherInfo;
-import com.lucidcoders.tourneyspot.backend.tourneyDetail.model.Registration;
-import com.lucidcoders.tourneyspot.backend.tourneyDetail.model.Size;
-import com.lucidcoders.tourneyspot.backend.tourneyDetail.model.Structure;
-import com.lucidcoders.tourneyspot.backend.tourneyDetail.model.TournamentInfo;
-import com.lucidcoders.tourneyspot.backend.tourneyDetail.model.TourneyDetails;
+import com.lucidcoders.tourneyspot.backend.tourneyDetailApi.model.BuyInDetails;
+import com.lucidcoders.tourneyspot.backend.tourneyDetailApi.model.Format;
+import com.lucidcoders.tourneyspot.backend.tourneyDetailApi.model.OtherInfo;
+import com.lucidcoders.tourneyspot.backend.tourneyDetailApi.model.Registration;
+import com.lucidcoders.tourneyspot.backend.tourneyDetailApi.model.Size;
+import com.lucidcoders.tourneyspot.backend.tourneyDetailApi.model.Structure;
+import com.lucidcoders.tourneyspot.backend.tourneyDetailApi.model.TournamentInfo;
+import com.lucidcoders.tourneyspot.backend.tourneyDetailApi.model.TourneyDetails;
 
 public class TourneyDetailsBuilder {
     

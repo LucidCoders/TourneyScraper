@@ -14,7 +14,7 @@ import com.lucidcoders.tournamentscraper.rest.Extractor;
 import com.lucidcoders.tournamentscraper.rest.ImportIoRequest;
 import com.lucidcoders.tournamentscraper.rest.response.AtlasDetailsResponse;
 import com.lucidcoders.tournamentscraper.util.MyLogger;
-import com.lucidcoders.tourneyspot.backend.tourneyDetail.model.TourneyDetails;
+import com.lucidcoders.tourneyspot.backend.tourneyDetailApi.model.TourneyDetails;
 
 public class AtlasDetailsScrape {
 

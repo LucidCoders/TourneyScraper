@@ -3,9 +3,9 @@ package com.lucidcoders.tournamentscraper.scrape;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.lucidcoders.tournamentscraper.gae.TourneyDetailApi;
+import com.lucidcoders.tournamentscraper.gae.TourneyDetailService;
 import com.lucidcoders.tournamentscraper.util.MyLogger;
-import com.lucidcoders.tourneyspot.backend.tourneyDetail.model.TourneyDetails;
+import com.lucidcoders.tourneyspot.backend.tourneyDetailApi.model.TourneyDetails;
 
 public class AtlasFullScrape {
 
@@ -51,7 +51,7 @@ public class AtlasFullScrape {
 			    public void run() {
 				
 				for (TourneyDetails tourneyDetails : eventDetails) {
-				    TourneyDetailApi.getInstance().updateEvent(tourneyDetails);
+				    TourneyDetailService.getInstance().updateEvent(tourneyDetails);
 				}
 			    }
 			}).start();
@@ -89,7 +89,7 @@ public class AtlasFullScrape {
 			public void run() {
 
 			    for (TourneyDetails tourneyDetails : eventDetails) {
-				TourneyDetailApi.getInstance().updateEvent(tourneyDetails);
+				TourneyDetailService.getInstance().updateEvent(tourneyDetails);
 			    }
 			}
 		    }).start();

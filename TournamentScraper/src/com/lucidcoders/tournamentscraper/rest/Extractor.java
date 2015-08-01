@@ -8,7 +8,8 @@ public enum Extractor {
     ATLAS_UPCOMING_SCROLL("b3fa3514-e871-4f68-bb3b-b340f531a5de"),
     ATLAS_DETAILS_5_FIELDS("a8d38ab3-af6e-4d63-9a42-0ccbb79c3c29"),
     ATLAS_DETAILS_6_FIELDS("b8fc1f0f-c031-4511-be9b-0f3375b01942"),
-    ATLAS_POKER_ROOMS("3282b8f6-5b3d-450b-b16d-3b09c1775e16");
+    ATLAS_POKER_ROOMS("3282b8f6-5b3d-450b-b16d-3b09c1775e16"),
+    ATLAS_CASINO("7f3d6788-87ef-498d-bdac-2d6978dc2547");
     
     private final String id;
     

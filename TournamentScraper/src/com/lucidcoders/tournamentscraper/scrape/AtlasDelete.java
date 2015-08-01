@@ -1,10 +1,10 @@
 package com.lucidcoders.tournamentscraper.scrape;
 
-import com.lucidcoders.tournamentscraper.gae.TourneyDetailApi;
+import com.lucidcoders.tournamentscraper.gae.TourneyDetailService;
 
 public class AtlasDelete {
 
     public void execute() {
-	TourneyDetailApi.getInstance().removeAllEvents();
+	TourneyDetailService.getInstance().removeAllEvents();
     }
 }

@@ -4,9 +4,9 @@ import java.util.List;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.lucidcoders.tournamentscraper.gae.TourneyDetailApi;
+import com.lucidcoders.tournamentscraper.gae.TourneyDetailService;
 import com.lucidcoders.tournamentscraper.util.MyLogger;
-import com.lucidcoders.tourneyspot.backend.tourneyDetail.model.TourneyDetails;
+import com.lucidcoders.tourneyspot.backend.tourneyDetailApi.model.TourneyDetails;
 
 public class AtlasQuery {
     
@@ -17,7 +17,7 @@ public class AtlasQuery {
 	logger.writeToLog("******************************************* ATLAS QUERY LOG *******************************************");
 	logger.appendToLog("*******************************************************************************************************\n");
 
-	List<TourneyDetails> eventDetails = TourneyDetailApi.getInstance().listEvents();
+	List<TourneyDetails> eventDetails = TourneyDetailService.getInstance().listEvents(null, null);
 	
 	if (eventDetails != null && eventDetails.size() > 0) {
 

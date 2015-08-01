@@ -23,7 +23,8 @@
 	<classpathentry kind="lib" path="libs/protobuf-java-2.4.1.jar"/>
 	<classpathentry kind="lib" path="libs/google-api-client-jackson2-1.20.0.jar"/>
 	<classpathentry kind="lib" path="libs/google-http-client-jackson2-1.20.0.jar"/>
+	<classpathentry kind="lib" path="libs-backend/casinoApi-v1-java.zip"/>
+	<classpathentry kind="lib" path="libs-backend/tourneyDetailApi-v1-java.zip"/>
 	<classpathentry kind="lib" path="libs-backend/backend-android-endpoints.jar"/>
-	<classpathentry kind="lib" path="libs-backend/tourneyDetail-v1-java.zip"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
