@@ -12,14 +12,14 @@ import com.lucidcoders.tournamentscraper.rest.Extractor;
 import com.lucidcoders.tournamentscraper.rest.ImportIoRequest;
 import com.lucidcoders.tournamentscraper.rest.response.AtlasAreasResponse;
 import com.lucidcoders.tournamentscraper.rest.response.AtlasAreasResponse.Result;
-import com.lucidcoders.tournamentscraper.util.MyLogger;
+import com.lucidcoders.tournamentscraper.util.ScrapeLogger;
 
 public class AtlasAreasScrape {
 
     private List<String> mAreaUrls = new ArrayList<String>();
 
     public void execute() {
-	MyLogger logger = MyLogger.getInstance();
+	ScrapeLogger logger = ScrapeLogger.getInstance();
 	logger.appendLogEntry("Begin Atlas Areas Scrape...");
 	
 	String areasUrl = "http://www.pokeratlas.com/areas";

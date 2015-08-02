@@ -12,7 +12,7 @@ import com.lucidcoders.tournamentscraper.rest.Extractor;
 import com.lucidcoders.tournamentscraper.rest.ImportIoRequest;
 import com.lucidcoders.tournamentscraper.rest.response.AtlasUpcomingResponse;
 import com.lucidcoders.tournamentscraper.rest.response.AtlasUpcomingResponse.Result;
-import com.lucidcoders.tournamentscraper.util.MyLogger;
+import com.lucidcoders.tournamentscraper.util.ScrapeLogger;
 
 public class AtlasUpcomingScrape {
 
@@ -31,7 +31,7 @@ public class AtlasUpcomingScrape {
 
     public void execute() {
 	
-	MyLogger logger = MyLogger.getInstance();
+	ScrapeLogger logger = ScrapeLogger.getInstance();
 	logger.appendLogEntry("Begin Atlas Upcoming Scrape : " + mBaseUrl);
 
 	ImportIoRequest atlasUpcomingRequest = new ImportIoRequest(mBaseUrl);

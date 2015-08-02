@@ -1,17 +1,19 @@
 package com.lucidcoders.tournamentscraper.scrape;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.lucidcoders.tournamentscraper.gae.TourneyDetailService;
-import com.lucidcoders.tournamentscraper.util.MyLogger;
+import com.lucidcoders.tournamentscraper.util.ScrapeLogger;
 import com.lucidcoders.tourneyspot.backend.tourneyDetailApi.model.TourneyDetails;
 
 public class AtlasFullScrape {
 
     public void execute() {
 	
-	MyLogger logger = MyLogger.getInstance();
+	ScrapeLogger logger = ScrapeLogger.getInstance();
 	if (!logger.initialize()) return;
 	logger.writeToLog("**************************************** ATLAS FULL SCRAPE LOG ****************************************");
 	logger.appendToLog("*******************************************************************************************************\n");
@@ -51,7 +53,12 @@ public class AtlasFullScrape {
 			    public void run() {
 				
 				for (TourneyDetails tourneyDetails : eventDetails) {
-				    TourneyDetailService.getInstance().updateEvent(tourneyDetails);
+				    try {
+					TourneyDetailService.getInstance().updateEvent(tourneyDetails);
+				    } catch (IOException | GeneralSecurityException e) {
+					e.printStackTrace();
+					// TODO add gae logging
+				    }
 				}
 			    }
 			}).start();
@@ -89,7 +96,12 @@ public class AtlasFullScrape {
 			public void run() {
 
 			    for (TourneyDetails tourneyDetails : eventDetails) {
-				TourneyDetailService.getInstance().updateEvent(tourneyDetails);
+				try {
+				    TourneyDetailService.getInstance().updateEvent(tourneyDetails);
+				} catch (IOException | GeneralSecurityException e) {
+				    // TODO add gae logging
+				    e.printStackTrace();
+				}
 			    }
 			}
 		    }).start();

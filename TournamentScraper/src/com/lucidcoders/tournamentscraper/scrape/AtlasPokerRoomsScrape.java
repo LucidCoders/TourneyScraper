@@ -13,7 +13,7 @@ import com.lucidcoders.tournamentscraper.rest.Extractor;
 import com.lucidcoders.tournamentscraper.rest.ImportIoRequest;
 import com.lucidcoders.tournamentscraper.rest.response.AtlasPokerRoomsResponse;
 import com.lucidcoders.tournamentscraper.rest.response.AtlasPokerRoomsResponse.Result;
-import com.lucidcoders.tournamentscraper.util.MyLogger;
+import com.lucidcoders.tournamentscraper.util.ScrapeLogger;
 import com.lucidcoders.tournamentscraper.util.PokerRoomDeserializer;
 
 public class AtlasPokerRoomsScrape {
@@ -27,7 +27,7 @@ public class AtlasPokerRoomsScrape {
     
     public void execute() {
 	
-	MyLogger logger = MyLogger.getInstance();
+	ScrapeLogger logger = ScrapeLogger.getInstance();
 	logger.appendLogEntry("Begin Atlas Poker Rooms Scrape : " + mUrl);
 	
 	ImportIoRequest pokerRoomsRequest = new ImportIoRequest(mUrl);

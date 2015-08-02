@@ -13,7 +13,7 @@ import com.lucidcoders.tournamentscraper.object.TourneyDetailsBuilder;
 import com.lucidcoders.tournamentscraper.rest.Extractor;
 import com.lucidcoders.tournamentscraper.rest.ImportIoRequest;
 import com.lucidcoders.tournamentscraper.rest.response.AtlasDetailsResponse;
-import com.lucidcoders.tournamentscraper.util.MyLogger;
+import com.lucidcoders.tournamentscraper.util.ScrapeLogger;
 import com.lucidcoders.tourneyspot.backend.tourneyDetailApi.model.TourneyDetails;
 
 public class AtlasDetailsScrape {
@@ -28,7 +28,7 @@ public class AtlasDetailsScrape {
 
     public void execute() {
 	
-	MyLogger logger = MyLogger.getInstance();
+	ScrapeLogger logger = ScrapeLogger.getInstance();
 	logger.appendLogEntry("Begin Atlas Details Scrape...");
 	
 	ImportIoRequest atlasDetailsRequest;

@@ -1,18 +1,20 @@
 package com.lucidcoders.tournamentscraper.scrape;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gson.Gson;
+import com.lucidcoders.tournamentscraper.gae.CasinoService;
 import com.lucidcoders.tournamentscraper.rest.response.AtlasPokerRoomsResponse.Result;
-import com.lucidcoders.tournamentscraper.util.MyLogger;
+import com.lucidcoders.tournamentscraper.util.ScrapeLogger;
 import com.lucidcoders.tourneyspot.backend.casinoApi.model.Casino;
 
 public class AtlasCasinoFullScrape {
 
     public void execute() {
 	
-	MyLogger logger = MyLogger.getInstance();
+	ScrapeLogger logger = ScrapeLogger.getInstance();
 	if (!logger.initialize()) return;
 	logger.writeToLog("**************************************** ATLAS CASINO SCRAPE LOG ****************************************");
 	logger.appendToLog("*******************************************************************************************************\n");
@@ -68,8 +70,6 @@ public class AtlasCasinoFullScrape {
 			logger.appendLogEntry("********** Failed getting Poker Room Links on Retry : " + url + " **********\n");
 		    }
 		}
-		
-		logger.appendLogEntry("********** Complete Failed Poker Room Links on Retry **********\n");
 	    }
 	    
 	    if (pokerRooms.size() > 0) {
@@ -83,17 +83,18 @@ public class AtlasCasinoFullScrape {
 		    logger.appendLogEntry("********** Success getting Casinos **********\n");
 
 		    for (Casino casino : casinos) {
-
-			//TODO implement insert
-			String testResponse = new Gson().toJson(casino, Casino.class);
-			System.out.println("Testing: " + testResponse);
+			try {
+			    CasinoService.getInstance().updateCasino(casino);
+			} catch (IOException | GeneralSecurityException e) {
+			    // TODO add gae logging
+			    e.printStackTrace();
+			}
 		    }
 
 		} else {
 		    logger.appendLogEntry("********** Failed getting Casinos **********\n");
 		}
 
-		// TODO Implement retry here
 		List<Result> failedRooms = casinoScrape.getFailedRooms();
 		if (failedRooms.size() > 0) {
 		    logger.appendLogEntry("********** Begin Failed Casinos Retry **********");
@@ -107,10 +108,12 @@ public class AtlasCasinoFullScrape {
 			logger.appendLogEntry("********** Success getting Casinos on Retry **********\n");
 
 			for (Casino casino : casinosRetry) {
-
-			    // TODO implement insert
-			    String testResponse = new Gson().toJson(casino, Casino.class);
-			    System.out.println("Testing: " + testResponse);
+			    try {
+				CasinoService.getInstance().updateCasino(casino);
+			    } catch (IOException | GeneralSecurityException e) {
+				// TODO add gae logging
+				e.printStackTrace();
+			    }
 			}
 
 		    } else {

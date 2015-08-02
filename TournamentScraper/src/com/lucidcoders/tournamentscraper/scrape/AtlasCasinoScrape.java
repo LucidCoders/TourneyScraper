@@ -15,7 +15,7 @@ import com.lucidcoders.tournamentscraper.rest.ImportIoRequest;
 import com.lucidcoders.tournamentscraper.rest.response.AtlasCasinoResponse;
 import com.lucidcoders.tournamentscraper.rest.response.AtlasPokerRoomsResponse.Result;
 import com.lucidcoders.tournamentscraper.util.CasinoDeserializer;
-import com.lucidcoders.tournamentscraper.util.MyLogger;
+import com.lucidcoders.tournamentscraper.util.ScrapeLogger;
 import com.lucidcoders.tourneyspot.backend.casinoApi.model.Casino;
 
 public class AtlasCasinoScrape {
@@ -30,7 +30,7 @@ public class AtlasCasinoScrape {
     
     public void execute() {
 	
-	MyLogger logger = MyLogger.getInstance();
+	ScrapeLogger logger = ScrapeLogger.getInstance();
 	logger.appendLogEntry("Begin Atlas Casino Scrape...");
 	
 	ImportIoRequest casinoRequest;
@@ -60,7 +60,6 @@ public class AtlasCasinoScrape {
 
 		    AtlasCasinoResponse casinoResponse = gson.fromJson(casinoRequest.getResult(),
 			    AtlasCasinoResponse.class);
-		    //TODO
 		    
 		    Casino casino = new CasinoBuilder(casinoResponse, pokerRoom).build();
 		    mCasinos.add(casino);

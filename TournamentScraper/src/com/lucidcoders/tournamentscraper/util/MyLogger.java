@@ -7,22 +7,16 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class MyLogger {
+public abstract class MyLogger {
 
-    private static MyLogger mMyLogger;
     private BufferedWriter mBufferedWriter;
-
-    public static synchronized MyLogger getInstance() {
-	if (mMyLogger == null) {
-	    mMyLogger = new MyLogger();
-	}
-	return mMyLogger;
-    }
     
-    public boolean initialize() {
+    public abstract boolean initialize();
+    
+    protected boolean initializeHelper(String fileName) {
 	try {
 	    String month = new SimpleDateFormat("yyyy_MM").format(new Date());
-	    String date = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss").format(new Date());
+	    String date = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(new Date());
 	    
 	    //TODO undo this later
 	    String directory = "C:/Users/Queezy/Dev/PokerAtlas/Crawler/" + month;
@@ -33,7 +27,7 @@ public class MyLogger {
 		dir.mkdirs();
 	    }
 
-	    File file = new File(directory + "/" + date + ".txt");
+	    File file = new File(directory + "/" + fileName + "_" + date + ".txt");
 	    if (!file.exists()) {
 		file.createNewFile();
 	    }
@@ -45,7 +39,7 @@ public class MyLogger {
 	    e.printStackTrace();
 	}
 	
-	return mBufferedWriter != null ? true : false;
+	return mBufferedWriter != null;
     }
 
     /**

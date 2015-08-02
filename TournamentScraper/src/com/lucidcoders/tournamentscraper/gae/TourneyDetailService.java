@@ -15,80 +15,48 @@ import com.lucidcoders.tourneyspot.backend.tourneyDetailApi.model.TourneyDetails
 public class TourneyDetailService {
 
     private static TourneyDetailService mDetailApi;
-    private TourneyDetailApi service = null;
-    
-    public static synchronized TourneyDetailService getInstance() {
+    private TourneyDetailApi mService = null;
+
+    public static synchronized TourneyDetailService getInstance() throws GeneralSecurityException, IOException {
 	if (mDetailApi == null) {
 	    mDetailApi = new TourneyDetailService();
 	    mDetailApi.build();
 	}
-	
+
 	return mDetailApi;
     }
 
-    private void build() {
-	try {
-	    TourneyDetailApi.Builder builder = new TourneyDetailApi.Builder(GoogleNetHttpTransport.newTrustedTransport(),
-	    	JacksonFactory.getDefaultInstance(), null)
-	    .setRootUrl("http://localhost:8080/_ah/api/")
-	    .setApplicationName("TourneyScraper")
-	    .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
-	        
-	        @Override
-	        public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {
-	            abstractGoogleClientRequest.setDisableGZipContent(true);
-	        }
-	    });
-	    
-	    service = builder.build();
-	    
-	} catch (GeneralSecurityException | IOException e) {
-	    e.printStackTrace();
-	}
+    private void build() throws GeneralSecurityException, IOException {
+
+	TourneyDetailApi.Builder builder = new TourneyDetailApi.Builder(GoogleNetHttpTransport.newTrustedTransport(),
+		JacksonFactory.getDefaultInstance(), null).setRootUrl("http://localhost:8080/_ah/api/")
+		.setApplicationName("TourneyScraper")
+		.setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
+
+		    @Override
+		    public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest)
+			    throws IOException {
+			abstractGoogleClientRequest.setDisableGZipContent(true);
+		    }
+		});
+
+	mService = builder.build();
     }
-    
-    public List<TourneyDetails> listEvents(String casinoId, DateTime eventDate) {
-	try {
-//	    return service.listEvents().execute().getItems();
-	    return service.listEvents().setCasinoId(casinoId).set("eventDate", eventDate).execute().getItems();
-	} catch (IOException e) {
-	    e.printStackTrace();
-	    return null;
-	}
+
+    public List<TourneyDetails> listEvents(String casinoId, DateTime eventDate) throws IOException {
+	return mService.listEvents().setCasinoId(casinoId).set("eventDate", eventDate).execute().getItems();
     }
-    
-    public void updateEvent(TourneyDetails tourneyDetails) {
-	try {
-	    System.out.println("*** Performing Insert : " + tourneyDetails.getAtlasId() + " ***");
-	    service.updateEvent(tourneyDetails).execute();
-	} catch (IOException e) {
-	    e.printStackTrace();
-	}
+
+    public void updateEvent(TourneyDetails tourneyDetails) throws IOException {
+	// System.out.println("*** Performing Insert : " +
+	// tourneyDetails.getAtlasId() + " ***");
+	mService.updateEvent(tourneyDetails).execute();
     }
-    
-    public void removeAllEvents() {
-	try {
-	    service.removeAllEvents().execute();
-	} catch (IOException e) {
-	    e.printStackTrace();
-	}
+
+    public void removeAllEvents() throws IOException {
+	mService.removeAllEvents().execute();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
