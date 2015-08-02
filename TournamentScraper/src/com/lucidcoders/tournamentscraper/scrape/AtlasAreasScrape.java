@@ -18,7 +18,7 @@ public class AtlasAreasScrape {
 
     private List<String> mAreaUrls = new ArrayList<String>();
 
-    public void execute() {
+    public AtlasAreasScrape execute() {
 	ScrapeLogger logger = ScrapeLogger.getInstance();
 	logger.appendLogEntry("Begin Atlas Areas Scrape...");
 	
@@ -34,7 +34,7 @@ public class AtlasAreasScrape {
 	    logger.appendLogEntry(
 		    "Failed to send AtlasAreas request : " + areasUrl + " : " + e.getClass() + " : " + e.getMessage());
 	    logger.appendLogEntry("Complete Atlas Areas Scrape");
-	    return;
+	    return this;
 	}
 
 	if (response.getStatusLine().getStatusCode() == 200) {
@@ -58,6 +58,7 @@ public class AtlasAreasScrape {
 	}
 	
 	logger.appendLogEntry("Complete Atlas Areas Scrape");
+	return this;
     }
 
     public List<String> getAreaUrls() {

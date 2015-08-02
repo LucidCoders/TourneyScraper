@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.lucidcoders.tournamentscraper.gae.TourneyDetailService;
+import com.lucidcoders.tournamentscraper.util.DatastoreLogger;
 import com.lucidcoders.tournamentscraper.util.ScrapeLogger;
 import com.lucidcoders.tourneyspot.backend.tourneyDetailApi.model.TourneyDetails;
 
@@ -13,8 +14,15 @@ public class AtlasFullScrape {
 
     public void execute() {
 	
+	DatastoreLogger dsLogger = DatastoreLogger.getInstance();
+	if (!dsLogger.initialize()) return;
+	
 	ScrapeLogger logger = ScrapeLogger.getInstance();
 	if (!logger.initialize()) return;
+	
+	dsLogger.writeToLog("**************************************** EVENT UPDATE LOG ****************************************");
+	dsLogger.appendToLog("***************************************************************************************************\n");
+	
 	logger.writeToLog("**************************************** ATLAS FULL SCRAPE LOG ****************************************");
 	logger.appendToLog("*******************************************************************************************************\n");
 
@@ -44,26 +52,19 @@ public class AtlasFullScrape {
 		    
 		    final List<TourneyDetails> eventDetails = detailScrape.getEventDetails();
 		    if (eventDetails.size() > 0) {
-			
+
 			logger.appendLogEntry("********** Success getting Event Details : " + url + " **********\n");
-			
-			new Thread(new Runnable() {
-			    
-			    @Override
-			    public void run() {
-				
-				for (TourneyDetails tourneyDetails : eventDetails) {
-				    try {
-					TourneyDetailService.getInstance().updateEvent(tourneyDetails);
-				    } catch (IOException | GeneralSecurityException e) {
-					e.printStackTrace();
-					// TODO add gae logging
-				    }
-				}
+
+			for (TourneyDetails tourneyDetails : eventDetails) {
+			    try {
+				TourneyDetailService.getInstance().updateEvent(tourneyDetails);
+				dsLogger.appendLogEntry("Updated: " + tourneyDetails.getAtlasId());
+			    } catch (IOException | GeneralSecurityException e) {
+				dsLogger.appendLogEntry("Failed to Update: " + tourneyDetails.getAtlasId() + " : "
+					+ e.getClass() + " : " + e.getMessage());
+				e.printStackTrace();
 			    }
-			}).start();
-			
-			
+			}
 		    } else {
 			logger.appendLogEntry("********** Failed to get Event Details : " + url + " **********\n");
 		    }
@@ -90,30 +91,22 @@ public class AtlasFullScrape {
 
 		    logger.appendLogEntry("********** Success getting Event Details on Retry **********\n");
 
-		    new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-
-			    for (TourneyDetails tourneyDetails : eventDetails) {
-				try {
-				    TourneyDetailService.getInstance().updateEvent(tourneyDetails);
-				} catch (IOException | GeneralSecurityException e) {
-				    // TODO add gae logging
-				    e.printStackTrace();
-				}
-			    }
+		    for (TourneyDetails tourneyDetails : eventDetails) {
+			try {
+			    TourneyDetailService.getInstance().updateEvent(tourneyDetails);
+			    dsLogger.appendLogEntry("Updated: " + tourneyDetails.getAtlasId());
+			} catch (IOException | GeneralSecurityException e) {
+			    dsLogger.appendLogEntry("Failed to Update: " + tourneyDetails.getAtlasId() + " : "
+					+ e.getClass() + " : " + e.getMessage());
+			    e.printStackTrace();
 			}
-		    }).start();
-
+		    }
 		} else {
 		    logger.appendLogEntry("********** Failed to get Event Details on Retry **********\n");
 		}
-
 	    } else {
 		logger.appendLogEntry("********** No Failed Event Urls **********\n");
 	    }
-	    
 	} else {
 	   logger.appendLogEntry("********** Failed to get Area Urls **********\n");
 	}

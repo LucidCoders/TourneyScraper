@@ -1,10 +1,14 @@
 package com.lucidcoders.tournamentscraper.object;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
+import com.google.api.client.util.Base64;
 import com.lucidcoders.tournamentscraper.rest.response.AtlasCasinoResponse;
 import com.lucidcoders.tournamentscraper.rest.response.AtlasCasinoResponse.Result;
 import com.lucidcoders.tournamentscraper.rest.response.AtlasPokerRoomsResponse;
+import com.lucidcoders.tournamentscraper.util.Util;
 import com.lucidcoders.tourneyspot.backend.casinoApi.model.Casino;
 
 public class CasinoBuilder {
@@ -43,9 +47,44 @@ public class CasinoBuilder {
 	    casino.setHours(casinoResult.getHours());
 	    casino.setAge(casinoResult.getAge());
 	    casino.setWebsite(casinoResult.getWebsite());
-//	    casino.setImage(image); // TODO setImage from Url
+	    
+	    // TODO setImage from Url - this might be wrong 
+	    byte[] imageBytes = null;
+	    try {
+		imageBytes = Util.downloadImageUrl(new URL(casinoResult.getImage()));
+	    } catch (MalformedURLException e) {
+		// TODO Maybe add logging here
+		e.printStackTrace();
+	    }
+	    
+	    if (imageBytes != null && imageBytes.length > 0) {
+		casino.setImage(new String(Base64.encodeBase64(imageBytes)));
+	    }
 	}
 	
 	return casino;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
