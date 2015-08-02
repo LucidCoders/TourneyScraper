@@ -27,5 +27,6 @@
 	<classpathentry kind="lib" path="libs-backend/backend-android-endpoints.jar"/>
 	<classpathentry kind="lib" path="libs-backend/casinoApi-v1-java.zip"/>
 	<classpathentry kind="lib" path="libs-backend/tourneyDetailApi-v1-java.zip"/>
+	<classpathentry kind="lib" path="libs-backend/seriesApi-v1-java.zip"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

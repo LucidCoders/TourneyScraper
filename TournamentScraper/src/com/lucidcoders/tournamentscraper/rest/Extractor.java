@@ -9,7 +9,10 @@ public enum Extractor {
     ATLAS_DETAILS_5_FIELDS("a8d38ab3-af6e-4d63-9a42-0ccbb79c3c29"),
     ATLAS_DETAILS_6_FIELDS("b8fc1f0f-c031-4511-be9b-0f3375b01942"),
     ATLAS_POKER_ROOMS("3282b8f6-5b3d-450b-b16d-3b09c1775e16"),
-    ATLAS_CASINO("7f3d6788-87ef-498d-bdac-2d6978dc2547");
+    ATLAS_CASINO("7f3d6788-87ef-498d-bdac-2d6978dc2547"),
+    ATLAS_SERIES("bb2b6af7-1161-4f95-908d-a4b80df055c7"),
+    ATLAS_SERIES_DETAILS("ad97509f-ae40-49cc-833f-ea24629a4842"),
+    ATLAS_SERIES_EVENTS("d2d41895-4f5f-4b84-b79a-440b6d650324");
     
     private final String id;
     

@@ -3,10 +3,12 @@ package com.lucidcoders.tournamentscraper.util;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 //import org.apache.commons.
+
 
 
 
@@ -42,6 +44,20 @@ public class Util {
     
     public static String getLogTimeStamp() {
 	return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + ": ";
+    }
+    
+    public static DateTime stringToDateTime(String dateString, String dateFormat) {
+	DateTime dateTime = null;
+	
+	try {
+	    SimpleDateFormat formatter = new SimpleDateFormat(dateFormat);
+	    Date date = formatter.parse(dateString);
+	    dateTime = dateToDateTime(date);
+	} catch (ParseException e) {
+	    e.printStackTrace();
+	}
+	
+	return dateTime;
     }
     
     public static byte[] downloadImageUrl(URL url) {
