@@ -74,7 +74,6 @@ public class TourneyDetailsBuilder {
 	    } else if (eachResult.getDetailGroup().equalsIgnoreCase(DetailGroup.OTHER_INFO.getGroupName())) {
 
 		buildOtherInfo(tourneyDetails, eachResult);
-
 	    }
 	}
 
@@ -83,8 +82,10 @@ public class TourneyDetailsBuilder {
     
     private void buildEventDetails(TourneyDetails tourneyDetails, Result eachResult) {
 
+	tourneyDetails.setCasinoId(eachResult.getCasinoSource().replace("/poker-room/", ""));
 	tourneyDetails.setCasinoName(eachResult.getCasinoText());
 	tourneyDetails.setEventName(eachResult.getEventName());
+	tourneyDetails.setSeriesId(eachResult.getSeriesSource().replace("/poker-tournament-series/", ""));
 	tourneyDetails.setSeriesName(eachResult.getSeriesText());
 	tourneyDetails.setBuyIn(eachResult.getBuyIn());
 	tourneyDetails.setEventDate(Util.dateToDateTime(eachResult.getEventDate()));

@@ -39,7 +39,6 @@ public class CasinoService {
 		});
 
 	mService = builder.build();
-
     }
 
     public void updateCasino(Casino casino) throws IOException {

@@ -1,11 +1,14 @@
 package com.lucidcoders.tournamentscraper.scrape;
 
-import java.util.ArrayList;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.List;
 
+import com.lucidcoders.tournamentscraper.gae.SeriesService;
 import com.lucidcoders.tournamentscraper.rest.response.AtlasSeriesResponse.SeriesResult;
 import com.lucidcoders.tournamentscraper.util.DatastoreLogger;
 import com.lucidcoders.tournamentscraper.util.ScrapeLogger;
+import com.lucidcoders.tourneyspot.backend.seriesApi.model.Series;
 
 public class AtlasSeriesFullScrape {
 
@@ -28,13 +31,48 @@ public class AtlasSeriesFullScrape {
 	if (seriesResults.size() > 0) {
 	    logger.appendLogEntry("********** Success getting Series Results **********\n");
 
-	    List<SeriesResult> pokerRooms = new ArrayList<SeriesResult>();
-	    List<String> failedSeriesUrls = new ArrayList<String>();
-
-	    new AtlasSeriesDetailsScrape(seriesResults).execute();
-	    //TODO get the series result and insert
+	    AtlasSeriesDetailsScrape seriesDetailsScrape = new AtlasSeriesDetailsScrape(seriesResults).execute();
+	    List<Series> seriesList = seriesDetailsScrape.getSeriesDetails();
+	    if (seriesList.size() > 0) {
+		logger.appendLogEntry("********** Success getting Series Details **********\n");
+		for (Series series : seriesList) {
+		    try {
+			SeriesService.getInstance().updateSeries(series);
+			dsLogger.appendLogEntry("Updated: " + series.getSeriesId());
+		    } catch (IOException | GeneralSecurityException e) {
+			dsLogger.appendLogEntry("Failed to Update: " + series.getSeriesId() + " : "
+				+ e.getClass() + " : " + e.getMessage());
+			e.printStackTrace();
+		    }
+		}
+	    } else {
+		logger.appendLogEntry("********** Failed getting Series Details **********\n");
+	    }
 	    
 	    //TODO retry failed results
+	    List<SeriesResult> failedSeriesList = seriesDetailsScrape.getFailedSeriesResults();
+	    if (failedSeriesList.size() > 0) {
+		logger.appendLogEntry("********** Begin Retry Series Details **********");
+		
+		AtlasSeriesDetailsScrape seriesDetailsScrapeRetry = new AtlasSeriesDetailsScrape(failedSeriesList).execute();
+		List<Series> seriesListRetry = seriesDetailsScrapeRetry.getSeriesDetails();
+		
+		if (seriesListRetry.size() > 0) {
+		    logger.appendLogEntry("********** Success getting Series Details on Retry **********\n");
+		    for (Series series : seriesListRetry) {
+			try {
+			    SeriesService.getInstance().updateSeries(series);
+			    dsLogger.appendLogEntry("Updated: " + series.getSeriesId());
+			} catch (IOException | GeneralSecurityException e) {
+			    dsLogger.appendLogEntry("Failed to Update: " + series.getSeriesId() + " : " + e.getClass()
+				    + " : " + e.getMessage());
+			    e.printStackTrace();
+			}
+		    }
+		} else {
+		    logger.appendLogEntry("********** Failed getting Series Details on Retry **********\n");
+		}
+	    }
 	    
 	    //TODO get the details from the seriesResults
 	    

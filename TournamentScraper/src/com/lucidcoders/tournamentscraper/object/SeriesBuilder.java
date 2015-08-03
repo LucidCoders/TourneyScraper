@@ -33,9 +33,10 @@ public class SeriesBuilder {
 	    series.setCasinoName(seriesDetailResult.getCasinoText());
 	    
 	    String dateStrings[] = seriesDetailResult.getDate().split("-");
-	    if (dateStrings[0] != null) {
+	    
+	    if (0 < dateStrings.length) {
 		series.setStartDate(Util.stringToDateTime(dateStrings[0].trim(), "MMM dd, yyyy"));
-		if (dateStrings[1] != null) {
+		if (1 < dateStrings.length) {
 		    series.setEndDate(Util.stringToDateTime(dateStrings[1].trim(), "MMM dd, yyyy"));
 		} else {
 		    series.setEndDate(Util.stringToDateTime(dateStrings[0].trim(), "MMM dd, yyyy"));

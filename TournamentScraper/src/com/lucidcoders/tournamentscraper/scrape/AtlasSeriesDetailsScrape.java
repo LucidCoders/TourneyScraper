@@ -60,8 +60,8 @@ public class AtlasSeriesDetailsScrape {
 		    mSeriesDetails.add(seriesDetails);
 		    
 		    //TODO testing series builder - remove later
-			String testResponse = gson.toJson(seriesDetails, Series.class);
-			System.out.println("Testing: " + testResponse);
+//			String testResponse = gson.toJson(seriesDetails, Series.class);
+//			System.out.println("Testing: " + testResponse);
 		    
 		} else {
 		    mFailedSeriesResults.add(seriesResult);
