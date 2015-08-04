@@ -22,14 +22,20 @@ public class AtlasDetailsScrape {
     private List<TourneyDetails> mEventDetails = new ArrayList<TourneyDetails>();
     private List<String> mFailedUrls = new ArrayList<String>();
     
+    private ScrapeLogger mLogger;
+    
     public AtlasDetailsScrape(List<String> urls) {
 	mUrls = urls;
+	mLogger = ScrapeLogger.getInstance();
+    }
+    
+    public AtlasDetailsScrape(List<String> urls, ScrapeLogger logger) {
+	mUrls = urls;
+	mLogger = logger;
     }
 
     public AtlasDetailsScrape execute() {
-	
-	ScrapeLogger logger = ScrapeLogger.getInstance();
-	logger.appendLogEntry("Begin Atlas Details Scrape...");
+	mLogger.appendLogEntry("Begin Atlas Details Scrape...");
 	
 	ImportIoRequest atlasDetailsRequest;
 
@@ -42,7 +48,7 @@ public class AtlasDetailsScrape {
 		response = atlasDetailsRequest.queryGet(Extractor.ATLAS_DETAILS_5_FIELDS);
 	    } catch (URISyntaxException | IOException e) {
 		e.printStackTrace();
-		logger.appendLogEntry("Failed to send AtlasDetails request : " + url + " : " + e.getClass() + " : "
+		mLogger.appendLogEntry("Failed to send AtlasDetails request : " + url + " : " + e.getClass() + " : "
 			+ e.getMessage());
 		mFailedUrls.add(url);
 		continue;
@@ -63,7 +69,7 @@ public class AtlasDetailsScrape {
 			    response = atlasDetailsRequest.queryGet(Extractor.ATLAS_DETAILS_6_FIELDS);
 			} catch (URISyntaxException | IOException e) {
 			    e.printStackTrace();
-			    logger.appendLogEntry("Failed to send AtlasDetails request : " + url + " : " + e.getClass()
+			    mLogger.appendLogEntry("Failed to send AtlasDetails request : " + url + " : " + e.getClass()
 				    + " : " + e.getMessage());
 			    mFailedUrls.add(url);
 			    continue;
@@ -75,7 +81,7 @@ public class AtlasDetailsScrape {
 				detailsResponse = gson.fromJson(atlasDetailsRequest.getResult(),
 					AtlasDetailsResponse.class);
 			    } else {
-				logger.appendLogEntry("Failed response from AtlasDetails request" + " - " + url
+				mLogger.appendLogEntry("Failed response from AtlasDetails request" + " - " + url
 					+ " - errorType : " + atlasDetailsRequest.getAtlasError().getErrorType()
 					+ " - error : " + atlasDetailsRequest.getAtlasError().getError());
 				mFailedUrls.add(url);
@@ -83,7 +89,7 @@ public class AtlasDetailsScrape {
 			    }
 
 			} else {
-			    logger.appendLogEntry("Failed response from AtlasDetails request : " + url);
+			    mLogger.appendLogEntry("Failed response from AtlasDetails request : " + url);
 			    mFailedUrls.add(url);
 			    continue;
 			}
@@ -94,17 +100,17 @@ public class AtlasDetailsScrape {
 		    
 		} else {
 		    mFailedUrls.add(url);
-		    logger.appendLogEntry("Failed response from AtlasDetails request" + " - " + url
+		    mLogger.appendLogEntry("Failed response from AtlasDetails request" + " - " + url
 				+ " - errorType : " + atlasDetailsRequest.getAtlasError().getErrorType()
 				+ " - error : " + atlasDetailsRequest.getAtlasError().getError());
 		}
 	    } else {
 		mFailedUrls.add(url);
-		logger.appendLogEntry("Failed response from AtlasDetails request : " + url);
+		mLogger.appendLogEntry("Failed response from AtlasDetails request : " + url);
 	    }
 	}
 	
-	logger.appendLogEntry("Complete Atlas Details Scrape");
+	mLogger.appendLogEntry("Complete Atlas Details Scrape");
 	return this;
     }
     

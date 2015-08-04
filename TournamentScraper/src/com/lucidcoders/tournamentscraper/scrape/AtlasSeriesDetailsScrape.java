@@ -19,18 +19,24 @@ import com.lucidcoders.tourneyspot.backend.seriesApi.model.Series;
 
 public class AtlasSeriesDetailsScrape {
 
-    List<SeriesResult> mSeriesResults = new ArrayList<SeriesResult>();
-    List<SeriesResult> mFailedSeriesResults = new ArrayList<SeriesResult>();
-    List<Series> mSeriesDetails = new ArrayList<Series>();
+    private List<SeriesResult> mSeriesResults = new ArrayList<SeriesResult>();
+    private List<SeriesResult> mFailedSeriesResults = new ArrayList<SeriesResult>();
+    private List<Series> mSeriesDetails = new ArrayList<Series>();
+    
+    private ScrapeLogger mLogger;
     
     public AtlasSeriesDetailsScrape(List<SeriesResult> seriesResults) {
 	mSeriesResults = seriesResults;
+	mLogger = ScrapeLogger.getInstance();
+    }
+    
+    public AtlasSeriesDetailsScrape(List<SeriesResult> seriesResults, ScrapeLogger logger) {
+	mSeriesResults = seriesResults;
+	mLogger = logger;
     }
     
     public AtlasSeriesDetailsScrape execute() {
-	
-	ScrapeLogger logger = ScrapeLogger.getInstance();
-	logger.appendLogEntry("Begin Atlas Series Details Scrape...");
+	mLogger.appendLogEntry("Begin Atlas Series Details Scrape...");
 	
 	ImportIoRequest seriesDetailsRequest;
 	
@@ -42,7 +48,7 @@ public class AtlasSeriesDetailsScrape {
 		response = seriesDetailsRequest.queryGet(Extractor.ATLAS_SERIES_DETAILS);
 	    } catch (URISyntaxException | IOException e) {
 		e.printStackTrace();
-		logger.appendLogEntry("Failed to send Series Details request : " + seriesResult.getSeriesLink() + " : "
+		mLogger.appendLogEntry("Failed to send Series Details request : " + seriesResult.getSeriesLink() + " : "
 			+ e.getClass() + " : " + e.getMessage());
 		mFailedSeriesResults.add(seriesResult);
 		continue;
@@ -65,19 +71,19 @@ public class AtlasSeriesDetailsScrape {
 		    
 		} else {
 		    mFailedSeriesResults.add(seriesResult);
-		    logger.appendLogEntry("Failed response from Series Details request" + " - " + seriesResult.getSeriesLink()
+		    mLogger.appendLogEntry("Failed response from Series Details request" + " - " + seriesResult.getSeriesLink()
 				+ " - errorType : " + seriesDetailsRequest.getAtlasError().getErrorType()
 				+ " - error : " + seriesDetailsRequest.getAtlasError().getError());
 		}
 	    } else {
 		mFailedSeriesResults.add(seriesResult);
-		logger.appendLogEntry("Failed response from Series Details request : " + seriesResult.getSeriesLink());
+		mLogger.appendLogEntry("Failed response from Series Details request : " + seriesResult.getSeriesLink());
 	    }
 	    
 //	    break;//TODO for testing remove later
 	}
 	
-	logger.appendLogEntry("Complete Series Details Scrape");	
+	mLogger.appendLogEntry("Complete Series Details Scrape");	
 	return this;
     }
     

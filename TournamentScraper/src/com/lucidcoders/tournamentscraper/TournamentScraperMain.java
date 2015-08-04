@@ -13,6 +13,7 @@ import com.lucidcoders.tournamentscraper.scrape.AtlasDetailsScrape;
 import com.lucidcoders.tournamentscraper.scrape.AtlasFullScrape;
 import com.lucidcoders.tournamentscraper.scrape.AtlasQuery;
 import com.lucidcoders.tournamentscraper.scrape.AtlasSeriesFullScrape;
+import com.lucidcoders.tournamentscraper.scrape.AtlasSeriesFullScrapeMultiThread;
 import com.lucidcoders.tournamentscraper.scrape.SeriesEventScrape;
 
 
@@ -23,7 +24,8 @@ public class TournamentScraperMain {
 	
 //	new AtlasFullScrape().execute();
 //	new AtlasCasinoFullScrape().execute();
-	new AtlasSeriesFullScrape().execute();
+//	new AtlasSeriesFullScrape().execute();
+	new AtlasSeriesFullScrapeMultiThread().execute();
 //	new AtlasQuery().execute();
 //	new AtlasDelete().execute();
 	

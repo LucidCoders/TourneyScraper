@@ -51,7 +51,7 @@ public class AtlasSeriesFullScrape {
 		logger.appendLogEntry("********** Failed getting Series Details **********\n");
 	    }
 	    
-	    //TODO retry failed results
+	    //Retry failed SeriesResults
 	    List<SeriesResult> failedSeriesList = seriesDetailsScrape.getFailedSeriesResults();
 	    if (failedSeriesList.size() > 0) {
 		logger.appendLogEntry("********** Begin Retry Series Details **********");
@@ -76,8 +76,7 @@ public class AtlasSeriesFullScrape {
 		}
 	    }
 	    
-	    //TODO get the details from the seriesResults
-	    
+	    // Get the details from the seriesEventResults
 	    SeriesEventScrape seriesEventScrape = new SeriesEventScrape(seriesResults).execute();
 	    List<String> eventLinks = seriesEventScrape.getEventLinks();
 	    if (eventLinks.size() > 0) {
@@ -132,7 +131,7 @@ public class AtlasSeriesFullScrape {
 		logger.appendLogEntry("********** Failed getting Series Event Links **********\n");
 	    }
 	    
-	    // TODO retry
+	    // Retry Failed SeriesEvent Scrape
 	    List<SeriesResult> failedSeriesResults = seriesEventScrape.getFailedSeriesResults();
 	    if (failedSeriesResults.size() > 0) {
 		logger.appendLogEntry("********** Begin Failed Series Event Links Retry **********\n");
