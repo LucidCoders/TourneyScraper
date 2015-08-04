@@ -47,6 +47,7 @@ public class SeriesEventScrape {
 		e.printStackTrace();
 		mLogger.appendLogEntry("Failed to send AtlasSeriesEvents request : " + seriesResult.getSeriesLink() + " : " + e.getClass() + " : "
 			+ e.getMessage());
+		mFailedSeriesResults.add(seriesResult);
 		continue;
 	    }
 
@@ -66,10 +67,12 @@ public class SeriesEventScrape {
 			    "Failed response from AtlasSeriesEvents request" + " - " + seriesResult.getSeriesLink()
 				    + " - errorType : " + seriesEventsRequest.getAtlasError().getErrorType()
 				    + " - error : " + seriesEventsRequest.getAtlasError().getError());
+		    mFailedSeriesResults.add(seriesResult);
 		}
 	    } else {
 		mLogger.appendLogEntry(
 			"Failed response from AtlasSeriesEvents request : " + seriesResult.getSeriesLink());
+		mFailedSeriesResults.add(seriesResult);
 	    }
 	}
 	
