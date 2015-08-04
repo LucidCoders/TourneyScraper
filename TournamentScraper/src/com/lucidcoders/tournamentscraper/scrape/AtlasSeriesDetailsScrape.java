@@ -65,7 +65,7 @@ public class AtlasSeriesDetailsScrape {
 		    
 		} else {
 		    mFailedSeriesResults.add(seriesResult);
-		    logger.appendLogEntry("Failed response from AtlasDetails request" + " - " + seriesResult.getSeriesLink()
+		    logger.appendLogEntry("Failed response from Series Details request" + " - " + seriesResult.getSeriesLink()
 				+ " - errorType : " + seriesDetailsRequest.getAtlasError().getErrorType()
 				+ " - error : " + seriesDetailsRequest.getAtlasError().getError());
 		}

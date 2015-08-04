@@ -47,8 +47,7 @@ public class AtlasFullScrape {
 		    
 		    logger.appendLogEntry("********** Success getting Event Links : " + url + " **********\n");
 		    
-		    AtlasDetailsScrape detailScrape = new AtlasDetailsScrape(eventLinks);
-		    detailScrape.execute();
+		    AtlasDetailsScrape detailScrape = new AtlasDetailsScrape(eventLinks).execute();
 		    
 		    final List<TourneyDetails> eventDetails = detailScrape.getEventDetails();
 		    if (eventDetails.size() > 0) {

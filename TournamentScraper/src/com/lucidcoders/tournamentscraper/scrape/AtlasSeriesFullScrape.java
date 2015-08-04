@@ -5,10 +5,12 @@ import java.security.GeneralSecurityException;
 import java.util.List;
 
 import com.lucidcoders.tournamentscraper.gae.SeriesService;
+import com.lucidcoders.tournamentscraper.gae.TourneyDetailService;
 import com.lucidcoders.tournamentscraper.rest.response.AtlasSeriesResponse.SeriesResult;
 import com.lucidcoders.tournamentscraper.util.DatastoreLogger;
 import com.lucidcoders.tournamentscraper.util.ScrapeLogger;
 import com.lucidcoders.tourneyspot.backend.seriesApi.model.Series;
+import com.lucidcoders.tourneyspot.backend.tourneyDetailApi.model.TourneyDetails;
 
 public class AtlasSeriesFullScrape {
 
@@ -75,6 +77,119 @@ public class AtlasSeriesFullScrape {
 	    }
 	    
 	    //TODO get the details from the seriesResults
+	    
+	    SeriesEventScrape seriesEventScrape = new SeriesEventScrape(seriesResults).execute();
+	    List<String> eventLinks = seriesEventScrape.getEventLinks();
+	    if (eventLinks.size() > 0) {
+		logger.appendLogEntry("********** Success getting Series Event Links **********\n");
+		
+		AtlasDetailsScrape detailScrape = new AtlasDetailsScrape(eventLinks).execute();
+
+		final List<TourneyDetails> eventDetails = detailScrape.getEventDetails();
+		if (eventDetails.size() > 0) {
+
+		    logger.appendLogEntry("********** Success getting Event Details **********\n");
+
+		    for (TourneyDetails tourneyDetails : eventDetails) {
+			try {
+			    TourneyDetailService.getInstance().updateEvent(tourneyDetails);
+			    dsLogger.appendLogEntry("Updated: " + tourneyDetails.getAtlasId());
+			} catch (IOException | GeneralSecurityException e) {
+			    dsLogger.appendLogEntry("Failed to Update: " + tourneyDetails.getAtlasId() + " : "
+				    + e.getClass() + " : " + e.getMessage());
+			    e.printStackTrace();
+			}
+		    }
+		} else {
+		    logger.appendLogEntry("********** Failed to get Event Details **********\n");
+		}
+
+		if (detailScrape.getFailedUrls().size() > 0) {
+		    logger.appendLogEntry("********** Begin getting Series Event Links Retry **********\n");
+
+		    AtlasDetailsScrape detailScrapeRetry = new AtlasDetailsScrape(detailScrape.getFailedUrls()).execute();
+
+		    final List<TourneyDetails> eventDetailsRetry = detailScrapeRetry.getEventDetails();
+		    if (eventDetailsRetry.size() > 0) {
+
+			logger.appendLogEntry("********** Success getting Event Details on Retry **********\n");
+
+			for (TourneyDetails tourneyDetails : eventDetailsRetry) {
+			    try {
+				TourneyDetailService.getInstance().updateEvent(tourneyDetails);
+				dsLogger.appendLogEntry("Updated: " + tourneyDetails.getAtlasId());
+			    } catch (IOException | GeneralSecurityException e) {
+				dsLogger.appendLogEntry("Failed to Update: " + tourneyDetails.getAtlasId() + " : "
+					+ e.getClass() + " : " + e.getMessage());
+				e.printStackTrace();
+			    }
+			}
+		    } else {
+			logger.appendLogEntry("********** Failed to get Event Details on Retry **********\n");
+		    }
+		}
+	    } else {
+		logger.appendLogEntry("********** Failed getting Series Event Links **********\n");
+	    }
+	    
+	    // TODO retry
+	    List<SeriesResult> failedSeriesResults = seriesEventScrape.getFailedSeriesResults();
+	    if (failedSeriesResults.size() > 0) {
+		logger.appendLogEntry("********** Begin Failed Series Event Links Retry **********\n");
+		SeriesEventScrape seriesEventScrapeRetry = new SeriesEventScrape(failedSeriesResults).execute();
+		List<String> eventLinksRetry = seriesEventScrapeRetry.getEventLinks();
+		if (eventLinksRetry.size() > 0) {
+		    logger.appendLogEntry("********** Success getting Series Event Links on Retry **********\n");
+
+		    AtlasDetailsScrape detailScrape = new AtlasDetailsScrape(eventLinksRetry).execute();
+
+		    final List<TourneyDetails> eventDetails = detailScrape.getEventDetails();
+		    if (eventDetails.size() > 0) {
+
+			logger.appendLogEntry("********** Success getting Event Details on Retry **********\n");
+
+			for (TourneyDetails tourneyDetails : eventDetails) {
+			    try {
+				TourneyDetailService.getInstance().updateEvent(tourneyDetails);
+				dsLogger.appendLogEntry("Updated: " + tourneyDetails.getAtlasId());
+			    } catch (IOException | GeneralSecurityException e) {
+				dsLogger.appendLogEntry("Failed to Update: " + tourneyDetails.getAtlasId() + " : "
+					+ e.getClass() + " : " + e.getMessage());
+				e.printStackTrace();
+			    }
+			}
+		    } else {
+			logger.appendLogEntry("********** Failed to get Event Details on Retry **********\n");
+		    }
+
+		    if (detailScrape.getFailedUrls().size() > 0) {
+			logger.appendLogEntry("********** Begin getting Series Event Links Retry **********\n");
+
+			AtlasDetailsScrape detailScrapeRetry = new AtlasDetailsScrape(detailScrape.getFailedUrls()).execute();
+
+			final List<TourneyDetails> eventDetailsRetry = detailScrapeRetry.getEventDetails();
+			if (eventDetailsRetry.size() > 0) {
+
+			    logger.appendLogEntry("********** Success getting Event Details on Retry **********\n");
+
+			    for (TourneyDetails tourneyDetails : eventDetailsRetry) {
+				try {
+				    TourneyDetailService.getInstance().updateEvent(tourneyDetails);
+				    dsLogger.appendLogEntry("Updated: " + tourneyDetails.getAtlasId());
+				} catch (IOException | GeneralSecurityException e) {
+				    dsLogger.appendLogEntry("Failed to Update: " + tourneyDetails.getAtlasId() + " : "
+					    + e.getClass() + " : " + e.getMessage());
+				    e.printStackTrace();
+				}
+			    }
+			} else {
+			    logger.appendLogEntry("********** Failed to get Event Details on Retry **********\n");
+			}
+		    }
+		} else {
+		    logger.appendLogEntry("********** Failed getting Series Event Links **********\n");
+		}
+	    }
 	    
 	} else {
 	    logger.appendLogEntry("********** Failed to get Series Results **********\n");

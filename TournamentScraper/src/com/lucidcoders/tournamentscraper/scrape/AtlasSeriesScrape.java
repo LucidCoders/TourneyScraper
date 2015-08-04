@@ -15,15 +15,15 @@ import com.lucidcoders.tournamentscraper.rest.response.AtlasSeriesResponse.Serie
 import com.lucidcoders.tournamentscraper.util.ScrapeLogger;
 
 public class AtlasSeriesScrape {
-    
-    private List<SeriesResult> mSeries = new ArrayList<SeriesResult>(); 
+
+    private List<SeriesResult> mSeries = new ArrayList<SeriesResult>();
 
     public AtlasSeriesScrape execute() {
 	ScrapeLogger logger = ScrapeLogger.getInstance();
 	logger.appendLogEntry("Begin Atlas Series Scrape...");
-	
+
 	String seriesUrl = "http://www.pokeratlas.com/poker-tournament-series";
-	
+
 	ImportIoRequest atlasSeriesRequest = new ImportIoRequest(seriesUrl);
 
 	HttpResponse response;
@@ -31,12 +31,12 @@ public class AtlasSeriesScrape {
 	    response = atlasSeriesRequest.queryGet(Extractor.ATLAS_SERIES);
 	} catch (URISyntaxException | IOException e) {
 	    e.printStackTrace();
-	    logger.appendLogEntry(
-		    "Failed to send AtlasSeries request : " + seriesUrl + " : " + e.getClass() + " : " + e.getMessage());
+	    logger.appendLogEntry("Failed to send AtlasSeries request : " + seriesUrl + " : " + e.getClass() + " : "
+		    + e.getMessage());
 	    logger.appendLogEntry("Complete Atlas Series Scrape");
 	    return this;
 	}
-	
+
 	if (response.getStatusLine().getStatusCode() == 200) {
 	    if (!atlasSeriesRequest.isAtlasError()) {
 		AtlasSeriesResponse seriesResponse = new Gson().fromJson(atlasSeriesRequest.getResult().toString(),
@@ -46,34 +46,19 @@ public class AtlasSeriesScrape {
 		    mSeries.add(result);
 		}
 	    } else {
-		logger.appendLogEntry("Failed response from AtlasSeries request"
-			+ " - " + mSeries
-			+ " - errorType : " + atlasSeriesRequest.getAtlasError().getErrorType()
-			+ " - error : " + atlasSeriesRequest.getAtlasError().getError());
+		logger.appendLogEntry("Failed response from AtlasSeries request" + " - " + seriesUrl + " - errorType : "
+			+ atlasSeriesRequest.getAtlasError().getErrorType() + " - error : "
+			+ atlasSeriesRequest.getAtlasError().getError());
 	    }
 	} else {
 	    logger.appendLogEntry("Failed response from AtlasSeries request : " + seriesUrl);
 	}
-	
+
+	logger.appendLogEntry("Complete Atlas Series Scrape");
 	return this;
     }
-    
+
     public List<SeriesResult> getSeriesResults() {
 	return mSeries;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

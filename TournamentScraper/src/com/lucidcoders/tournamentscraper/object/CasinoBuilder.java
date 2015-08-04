@@ -48,7 +48,6 @@ public class CasinoBuilder {
 	    casino.setAge(casinoResult.getAge());
 	    casino.setWebsite(casinoResult.getWebsite());
 	    
-	    // TODO setImage from Url - this might be wrong 
 	    byte[] imageBytes = null;
 	    try {
 		imageBytes = Util.downloadImageUrl(new URL(casinoResult.getImage()));

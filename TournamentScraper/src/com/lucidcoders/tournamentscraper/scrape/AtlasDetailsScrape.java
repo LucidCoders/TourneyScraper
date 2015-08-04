@@ -26,7 +26,7 @@ public class AtlasDetailsScrape {
 	mUrls = urls;
     }
 
-    public void execute() {
+    public AtlasDetailsScrape execute() {
 	
 	ScrapeLogger logger = ScrapeLogger.getInstance();
 	logger.appendLogEntry("Begin Atlas Details Scrape...");
@@ -105,6 +105,7 @@ public class AtlasDetailsScrape {
 	}
 	
 	logger.appendLogEntry("Complete Atlas Details Scrape");
+	return this;
     }
     
     public List<TourneyDetails> getEventDetails() {
