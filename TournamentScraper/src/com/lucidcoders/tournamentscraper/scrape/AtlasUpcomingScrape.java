@@ -20,19 +20,26 @@ public class AtlasUpcomingScrape {
     private String mBaseUrl;
     private String mScrollUrl;
     private List<String> mEventLinks = new ArrayList<String>();
+    private ScrapeLogger mLogger;
     
     public AtlasUpcomingScrape(String areaUrl, int pageCount) {
-	
 	mBaseUrl = "http://www.pokeratlas.com/poker-tournaments/" + areaUrl.replace("http://www.pokeratlas.com/", "")
 		+ "/upcoming";
 	mScrollUrl = mBaseUrl + "?page=";
 	mPageCount = pageCount;
+	mLogger = ScrapeLogger.getInstance();
+    }
+    
+    public AtlasUpcomingScrape(String areaUrl, int pageCount, ScrapeLogger logger) {
+	mBaseUrl = "http://www.pokeratlas.com/poker-tournaments/" + areaUrl.replace("http://www.pokeratlas.com/", "")
+		+ "/upcoming";
+	mScrollUrl = mBaseUrl + "?page=";
+	mPageCount = pageCount;
+	mLogger = logger;
     }
 
     public void execute() {
-	
-	ScrapeLogger logger = ScrapeLogger.getInstance();
-	logger.appendLogEntry("Begin Atlas Upcoming Scrape : " + mBaseUrl);
+	mLogger.appendLogEntry("Begin Atlas Upcoming Scrape : " + mBaseUrl);
 
 	ImportIoRequest atlasUpcomingRequest = new ImportIoRequest(mBaseUrl);
 	
@@ -41,9 +48,9 @@ public class AtlasUpcomingScrape {
 	    response = atlasUpcomingRequest.queryGet(Extractor.ATLAS_UPCOMING);
 	} catch (URISyntaxException | IOException e) {
 	    e.printStackTrace();
-	    logger.appendLogEntry(
+	    mLogger.appendLogEntry(
 		    "Failed to send AtlasUpcoming request : " + mBaseUrl + " : " + e.getClass() + " : " + e.getMessage());
-	    logger.appendLogEntry("Complete AtlasUpcoming Scrape : " + mBaseUrl);
+	    mLogger.appendLogEntry("Complete AtlasUpcoming Scrape : " + mBaseUrl);
 	    return;
 	}
 
@@ -68,7 +75,7 @@ public class AtlasUpcomingScrape {
 			scrollResponse = atlasUpcomingScrollRequest.queryGet(Extractor.ATLAS_UPCOMING_SCROLL);
 		    } catch (URISyntaxException | IOException e) {
 			e.printStackTrace();
-			logger.appendLogEntry("Failed to send AtlasUpcomingScroll request : " + scrollUrl + " : "
+			mLogger.appendLogEntry("Failed to send AtlasUpcomingScroll request : " + scrollUrl + " : "
 				+ e.getClass() + " : " + e.getMessage());
 			break;
 		    }
@@ -84,28 +91,28 @@ public class AtlasUpcomingScrape {
 				mEventLinks.add(result.getEventLink());
 			    }
 			} else {
-			    logger.appendLogEntry("Failed response from AtlasUpcomingScroll request"
+			    mLogger.appendLogEntry("Failed response from AtlasUpcomingScroll request"
 					+ " - " + scrollUrl
 					+ " - errorType : " + atlasUpcomingScrollRequest.getAtlasError().getErrorType()
 					+ " - error : " + atlasUpcomingScrollRequest.getAtlasError().getError());
 			    break;
 			}
 		    } else {
-			logger.appendLogEntry("Failed response from AtlasUpcomingScroll request : " + scrollUrl);
+			mLogger.appendLogEntry("Failed response from AtlasUpcomingScroll request : " + scrollUrl);
 			break;
 		    }
 		}
 	    } else {
-		logger.appendLogEntry("Failed response from AtlasUpcoming request"
+		mLogger.appendLogEntry("Failed response from AtlasUpcoming request"
 			+ " - " + mBaseUrl
 			+ " - errorType : " + atlasUpcomingRequest.getAtlasError().getErrorType()
 			+ " - error : " + atlasUpcomingRequest.getAtlasError().getError());
 	    }
 	} else {
-	    logger.appendLogEntry("Failed response from AtlasUpcoming request : " + mBaseUrl);
+	    mLogger.appendLogEntry("Failed response from AtlasUpcoming request : " + mBaseUrl);
 	}
 	
-	logger.appendLogEntry("Complete AtlasUpcoming Scrape : " + mBaseUrl);
+	mLogger.appendLogEntry("Complete AtlasUpcoming Scrape : " + mBaseUrl);
     }
 
     public List<String> getEventLinks() {

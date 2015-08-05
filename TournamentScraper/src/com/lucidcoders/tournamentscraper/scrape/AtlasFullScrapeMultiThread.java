@@ -2,7 +2,6 @@ package com.lucidcoders.tournamentscraper.scrape;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.lucidcoders.tournamentscraper.gae.TourneyDetailService;
@@ -21,77 +20,153 @@ public void execute() {
 
 	AtlasAreasScrape areaScrape = new AtlasAreasScrape();
 	areaScrape.execute();
-	
+
 	List<String> areaUrls = areaScrape.getAreaUrls();
 	if (areaUrls.size() > 0) {
 	    
 	    logger.appendLogEntry("********** Success getting Area Urls **********\n");
 	    
-	    AtlasUpcomingScrape upcomingScrape;
-	    
-	    List<String> failedEventUrls = new ArrayList<String>();
-	    
-	    for (String url : areaUrls) {
-		upcomingScrape = new AtlasUpcomingScrape(url, 2);
-		upcomingScrape.execute();
+	    int count = 1;
+	    for (final String url : areaUrls) {
+		final int counter = count;
 		
-		List<String> eventLinks = upcomingScrape.getEventLinks();
-		if (eventLinks.size() > 0) {
-		    
-		    logger.appendLogEntry("********** Success getting Event Links : " + url + " **********\n");
-		    
-		    AtlasDetailsScrape detailScrape = new AtlasDetailsScrape(eventLinks).execute();
-		    
-		    final List<TourneyDetails> eventDetails = detailScrape.getEventDetails();
-		    if (eventDetails.size() > 0) {
+		Thread thread = new Thread(new Runnable() {
 
-			logger.appendLogEntry("********** Success getting Event Details : " + url + " **********\n");
+		    @Override
+		    public void run() {
+			ScrapeLogger eventLogger = new ScrapeLogger("EventDetailsScrape" + counter);
+			eventLogger.initialize();
+			eventLogger.writeToLog(
+				"**************************************** ATLAS EVENT SCRAPE LOG ****************************************");
+			eventLogger.appendToLog(
+				"*********************************************************************************************************\n");
+			AtlasUpcomingScrape upcomingScrape = new AtlasUpcomingScrape(url, 10, eventLogger);
+			upcomingScrape.execute();
 
-			for (TourneyDetails tourneyDetails : eventDetails) {
-			    try {
-				TourneyDetailService.getInstance().updateEvent(tourneyDetails);
-			    } catch (IOException | GeneralSecurityException e) {
-				e.printStackTrace();
+			List<String> eventLinks = upcomingScrape.getEventLinks();
+			if (eventLinks.size() > 0) {
+
+			    eventLogger.appendLogEntry("********** Success getting Event Links : " + url + " **********\n");
+
+			    AtlasDetailsScrape detailScrape = new AtlasDetailsScrape(eventLinks).execute();
+
+			    final List<TourneyDetails> eventDetails = detailScrape.getEventDetails();
+			    if (eventDetails.size() > 0) {
+
+				eventLogger.appendLogEntry(
+					"********** Success getting Event Details : " + url + " **********\n");
+
+				for (TourneyDetails tourneyDetails : eventDetails) {
+				    try {
+					TourneyDetailService.getInstance().updateEvent(tourneyDetails);
+				    } catch (IOException | GeneralSecurityException e) {
+					e.printStackTrace();
+				    }
+				}
+			    } else {
+				eventLogger.appendLogEntry(
+					"********** Failed to get Event Details : " + url + " **********\n");
+			    }
+
+			    List<String> failedEventUrls = detailScrape.getFailedUrls();
+			    if (failedEventUrls.size() > 0) {
+				eventLogger.appendLogEntry("********** Begin Failed Events Retry **********");
+
+				AtlasDetailsScrape detailScrapeRetry = new AtlasDetailsScrape(failedEventUrls);
+				detailScrapeRetry.execute();
+
+				final List<TourneyDetails> eventDetailsRetry = detailScrapeRetry.getEventDetails();
+				if (eventDetailsRetry.size() > 0) {
+
+				    eventLogger.appendLogEntry(
+					    "********** Success getting Event Details on Retry **********\n");
+
+				    for (TourneyDetails tourneyDetails : eventDetailsRetry) {
+					try {
+					    TourneyDetailService.getInstance().updateEvent(tourneyDetails);
+					} catch (IOException | GeneralSecurityException e) {
+					    e.printStackTrace();
+					}
+				    }
+				} else {
+				    eventLogger.appendLogEntry(
+					    "********** Failed to get Event Details on Retry **********\n");
+				}
+			    }
+
+			} else {
+			    eventLogger.appendLogEntry("********** Failed to get Event Links : " + url + " **********\n");
+			    // ****************************************************************************
+			    // retry failed area urls + event details and retries
+
+			    eventLogger.appendLogEntry("********** Begin Failed Area Retry : " + url + " **********");
+
+			    AtlasUpcomingScrape upcomingScrapeRetry = new AtlasUpcomingScrape(url, 10, eventLogger);
+			    upcomingScrapeRetry.execute();
+
+			    List<String> eventLinksRetry = upcomingScrapeRetry.getEventLinks();
+			    if (eventLinksRetry.size() > 0) {
+
+				eventLogger.appendLogEntry(
+					"********** Success getting Event Links : " + url + " **********\n");
+
+				AtlasDetailsScrape detailScrape = new AtlasDetailsScrape(eventLinksRetry).execute();
+
+				final List<TourneyDetails> eventDetails = detailScrape.getEventDetails();
+				if (eventDetails.size() > 0) {
+
+				    eventLogger.appendLogEntry(
+					    "********** Success getting Event Details : " + url + " **********\n");
+
+				    for (TourneyDetails tourneyDetails : eventDetails) {
+					try {
+					    TourneyDetailService.getInstance().updateEvent(tourneyDetails);
+					} catch (IOException | GeneralSecurityException e) {
+					    e.printStackTrace();
+					}
+				    }
+				} else {
+				    eventLogger.appendLogEntry(
+					    "********** Failed to get Event Details : " + url + " **********\n");
+				}
+
+				List<String> failedEventUrls = detailScrape.getFailedUrls();
+				if (failedEventUrls.size() > 0) {
+				    eventLogger.appendLogEntry("********** Begin Failed Events Retry **********");
+
+				    AtlasDetailsScrape detailScrapeRetry = new AtlasDetailsScrape(failedEventUrls);
+				    detailScrapeRetry.execute();
+
+				    final List<TourneyDetails> eventDetailsRetry = detailScrapeRetry.getEventDetails();
+				    if (eventDetailsRetry.size() > 0) {
+
+					eventLogger.appendLogEntry(
+						"********** Success getting Event Details on Retry **********\n");
+
+					for (TourneyDetails tourneyDetails : eventDetailsRetry) {
+					    try {
+						TourneyDetailService.getInstance().updateEvent(tourneyDetails);
+					    } catch (IOException | GeneralSecurityException e) {
+						e.printStackTrace();
+					    }
+					}
+				    } else {
+					eventLogger.appendLogEntry(
+						"********** Failed to get Event Details on Retry **********\n");
+				    }
+				}
 			    }
 			}
-		    } else {
-			logger.appendLogEntry("********** Failed to get Event Details : " + url + " **********\n");
+			eventLogger.closeFile();
 		    }
-		    
-		    for (String failedUrl : detailScrape.getFailedUrls()) {
-			failedEventUrls.add(failedUrl);
-		    }
-		    
-		} else {
-		    logger.appendLogEntry("********** Failed to get Event Links : " + url + " **********\n");
+		});
+		thread.start();
+		try {
+		    Thread.sleep(5 * 1000);
+		} catch (InterruptedException e) {
+		    e.printStackTrace();
 		}
-		
-		break; //TODO breaking after one area for testing.  Remove for full scrape
-	    }
-	    
-	    if (failedEventUrls.size() > 0) {
-		logger.appendLogEntry("********** Begin Failed Events Retry **********");
-		
-		AtlasDetailsScrape detailScrape = new AtlasDetailsScrape(failedEventUrls);
-		detailScrape.execute();
-
-		final List<TourneyDetails> eventDetails = detailScrape.getEventDetails();
-		if (eventDetails.size() > 0) {
-
-		    logger.appendLogEntry("********** Success getting Event Details on Retry **********\n");
-
-		    for (TourneyDetails tourneyDetails : eventDetails) {
-			try {
-			    TourneyDetailService.getInstance().updateEvent(tourneyDetails);
-			} catch (IOException | GeneralSecurityException e) {
-			    e.printStackTrace();
-			}
-		    }
-		} else {
-		    logger.appendLogEntry("********** Failed to get Event Details on Retry **********\n");
-		}
-	    } else {
-		logger.appendLogEntry("********** No Failed Event Urls **********\n");
+		count++;
 	    }
 	} else {
 	   logger.appendLogEntry("********** Failed to get Area Urls **********\n");
