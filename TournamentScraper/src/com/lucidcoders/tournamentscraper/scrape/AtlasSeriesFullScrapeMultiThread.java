@@ -8,24 +8,15 @@ import java.util.List;
 import com.lucidcoders.tournamentscraper.gae.SeriesService;
 import com.lucidcoders.tournamentscraper.gae.TourneyDetailService;
 import com.lucidcoders.tournamentscraper.rest.response.AtlasSeriesResponse.SeriesResult;
-import com.lucidcoders.tournamentscraper.util.DatastoreLogger;
 import com.lucidcoders.tournamentscraper.util.ScrapeLogger;
 import com.lucidcoders.tourneyspot.backend.seriesApi.model.Series;
 import com.lucidcoders.tourneyspot.backend.tourneyDetailApi.model.TourneyDetails;
 
 public class AtlasSeriesFullScrapeMultiThread {
     public void execute() {
-	DatastoreLogger dsLogger = new DatastoreLogger("SeriesDatastore");
-	if (!dsLogger.initialize())
-	    return;
-
 	ScrapeLogger logger = new ScrapeLogger("SeriesScrape");
 	if (!logger.initialize())
 	    return;
-
-	dsLogger.writeToLog("**************************************** SERIES UPDATE LOG ****************************************");
-	dsLogger.appendToLog("***************************************************************************************************\n");
-
 	logger.writeToLog("**************************************** ATLAS SERIES SCRAPE LOG ****************************************");
 	logger.appendToLog("*********************************************************************************************************\n");
 
@@ -40,10 +31,7 @@ public class AtlasSeriesFullScrapeMultiThread {
 		for (Series series : seriesList) {
 		    try {
 			SeriesService.getInstance().updateSeries(series);
-			dsLogger.appendLogEntry("Updated: " + series.getSeriesId());
 		    } catch (IOException | GeneralSecurityException e) {
-			dsLogger.appendLogEntry("Failed to Update: " + series.getSeriesId() + " : "
-				+ e.getClass() + " : " + e.getMessage());
 			e.printStackTrace();
 		    }
 		}
@@ -64,10 +52,7 @@ public class AtlasSeriesFullScrapeMultiThread {
 		    for (Series series : seriesListRetry) {
 			try {
 			    SeriesService.getInstance().updateSeries(series);
-			    dsLogger.appendLogEntry("Updated: " + series.getSeriesId());
 			} catch (IOException | GeneralSecurityException e) {
-			    dsLogger.appendLogEntry("Failed to Update: " + series.getSeriesId() + " : " + e.getClass()
-				    + " : " + e.getMessage());
 			    e.printStackTrace();
 			}
 		    }
@@ -76,8 +61,7 @@ public class AtlasSeriesFullScrapeMultiThread {
 		}
 	    }
 	    
-	    //TODO get the details from the seriesResults
-	    
+	    // get the details from the seriesResults
 	    SeriesEventScrape seriesEventScrape = new SeriesEventScrape(seriesResults, logger).execute();
 	    List<ArrayList<String>> eventLinksArray = seriesEventScrape.getEventLinksArray();
 	    if (eventLinksArray.size() > 0) {
@@ -98,11 +82,6 @@ public class AtlasSeriesFullScrapeMultiThread {
 			    eventLogger.appendToLog(
 				    "*********************************************************************************************************\n");
 
-			    DatastoreLogger dsLogger = new DatastoreLogger("EventDetailsDatastore" + counter);
-			    dsLogger.initialize();
-			    dsLogger.writeToLog("**************************************** EVENT UPDATE LOG ****************************************");
-			    dsLogger.appendToLog("***************************************************************************************************\n");
-			    
 		            AtlasDetailsScrape detailScrape = new AtlasDetailsScrape(eventLinks, eventLogger).execute();
 
 			    final List<TourneyDetails> eventDetails = detailScrape.getEventDetails();
@@ -113,10 +92,7 @@ public class AtlasSeriesFullScrapeMultiThread {
 				for (TourneyDetails tourneyDetails : eventDetails) {
 				    try {
 					TourneyDetailService.getInstance().updateEvent(tourneyDetails);
-					dsLogger.appendLogEntry("Updated: " + tourneyDetails.getAtlasId());
 				    } catch (IOException | GeneralSecurityException e) {
-					dsLogger.appendLogEntry("Failed to Update: " + tourneyDetails.getAtlasId() + " : "
-						+ e.getClass() + " : " + e.getMessage());
 					e.printStackTrace();
 				    }
 				}
@@ -138,10 +114,7 @@ public class AtlasSeriesFullScrapeMultiThread {
 				    for (TourneyDetails tourneyDetails : eventDetailsRetry) {
 					try {
 					    TourneyDetailService.getInstance().updateEvent(tourneyDetails);
-					    dsLogger.appendLogEntry("Updated: " + tourneyDetails.getAtlasId());
 					} catch (IOException | GeneralSecurityException e) {
-					    dsLogger.appendLogEntry("Failed to Update: " + tourneyDetails.getAtlasId() + " : "
-						    + e.getClass() + " : " + e.getMessage());
 					    e.printStackTrace();
 					}
 				    }
@@ -149,11 +122,15 @@ public class AtlasSeriesFullScrapeMultiThread {
 				    eventLogger.appendLogEntry("********** Failed to get Event Details on Retry **********\n");
 				}
 			    }
-			    dsLogger.closeFile();
 			    eventLogger.closeFile();
 		        }
 		    });
 		    thread.start();
+		    try {
+			Thread.sleep(5 * 1000);
+		    } catch (InterruptedException e) {
+			e.printStackTrace();
+		    }
 		    count++;
 		}
 		
@@ -184,11 +161,6 @@ public class AtlasSeriesFullScrapeMultiThread {
 			    eventLogger.appendToLog(
 				    "*********************************************************************************************************\n");
 			    
-			    DatastoreLogger dsLogger = new DatastoreLogger("EventDetailsDatastoreRetry" + counter);
-			    dsLogger.initialize();
-			    dsLogger.writeToLog("**************************************** EVENT UPDATE LOG ****************************************");
-			    dsLogger.appendToLog("***************************************************************************************************\n");
-			    
 			    AtlasDetailsScrape detailScrape = new AtlasDetailsScrape(eventLinksRetry, eventLogger).execute();
 
 			    final List<TourneyDetails> eventDetails = detailScrape.getEventDetails();
@@ -199,10 +171,10 @@ public class AtlasSeriesFullScrapeMultiThread {
 				for (TourneyDetails tourneyDetails : eventDetails) {
 				    try {
 					TourneyDetailService.getInstance().updateEvent(tourneyDetails);
-					dsLogger.appendLogEntry("Updated: " + tourneyDetails.getAtlasId());
+//					dsLogger.appendLogEntry("Updated: " + tourneyDetails.getAtlasId());
 				    } catch (IOException | GeneralSecurityException e) {
-					dsLogger.appendLogEntry("Failed to Update: " + tourneyDetails.getAtlasId()
-						+ " : " + e.getClass() + " : " + e.getMessage());
+//					dsLogger.appendLogEntry("Failed to Update: " + tourneyDetails.getAtlasId()
+//						+ " : " + e.getClass() + " : " + e.getMessage());
 					e.printStackTrace();
 				    }
 				}
@@ -225,10 +197,7 @@ public class AtlasSeriesFullScrapeMultiThread {
 				    for (TourneyDetails tourneyDetails : eventDetailsRetry) {
 					try {
 					    TourneyDetailService.getInstance().updateEvent(tourneyDetails);
-					    dsLogger.appendLogEntry("Updated: " + tourneyDetails.getAtlasId());
 					} catch (IOException | GeneralSecurityException e) {
-					    dsLogger.appendLogEntry("Failed to Update: " + tourneyDetails.getAtlasId()
-						    + " : " + e.getClass() + " : " + e.getMessage());
 					    e.printStackTrace();
 					}
 				    }
@@ -238,10 +207,14 @@ public class AtlasSeriesFullScrapeMultiThread {
 				}
 			    }
 			    eventLogger.closeFile();
-			    dsLogger.closeFile();
 			}
 		    });
 		    thread.start();
+		    try {
+			Thread.sleep(5 * 1000);
+		    } catch (InterruptedException e) {
+			e.printStackTrace();
+		    }
 		    count++;
 		}
 	    }
@@ -250,6 +223,5 @@ public class AtlasSeriesFullScrapeMultiThread {
 	}
 
 	logger.closeFile();
-	dsLogger.closeFile();
     }
 }
