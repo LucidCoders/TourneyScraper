@@ -44,12 +44,14 @@ public class TourneyDetailService {
     }
 
     public List<TourneyDetails> listEvents(String casinoId, DateTime eventDate) throws IOException {
-	return mService.listEvents().setCasinoId(casinoId).set("eventDate", eventDate).execute().getItems();
+	return mService.listEvents().setCasinoId(casinoId).setEventDate(eventDate).execute().getItems();
+    }
+    
+    public List<TourneyDetails> listSeriesEvents(String seriesId, DateTime eventDate) throws IOException {
+	return mService.listSeriesEvents().setSeriesId(seriesId).setEventDate(eventDate).execute().getItems();
     }
 
     public void updateEvent(TourneyDetails tourneyDetails) throws IOException {
-	// System.out.println("*** Performing Insert : " +
-	// tourneyDetails.getAtlasId() + " ***");
 	mService.updateEvent(tourneyDetails).execute();
     }
 

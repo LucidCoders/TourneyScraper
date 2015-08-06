@@ -3,6 +3,7 @@ package com.lucidcoders.tournamentscraper.util;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -23,6 +24,19 @@ public class Util {
 	
 	
 	return 0;
+    }
+    
+    public static DateTime dateToDateTimeDateOnly(Date date) {
+	DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+	
+	Date dateNoTime = null;
+	try {
+	    dateNoTime = formatter.parse(formatter.format(date));
+	} catch (ParseException e) {
+	    e.printStackTrace();
+	}
+	
+	return new DateTime(dateNoTime != null ? dateNoTime.getTime() : date.getTime());
     }
     
     public static DateTime dateToDateTime(Date date) {

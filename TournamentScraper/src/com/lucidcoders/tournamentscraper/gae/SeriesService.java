@@ -7,7 +7,7 @@ import java.util.List;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
 import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
-import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.client.util.DateTime;
 import com.lucidcoders.tourneyspot.backend.seriesApi.SeriesApi;
 import com.lucidcoders.tourneyspot.backend.seriesApi.model.Series;
@@ -27,8 +27,9 @@ public class SeriesService {
     }
     
     private void build() throws GeneralSecurityException, IOException {
+	
 	SeriesApi.Builder builder = new SeriesApi.Builder(GoogleNetHttpTransport.newTrustedTransport(),
-		JacksonFactory.getDefaultInstance(), null).setRootUrl("http://localhost:8080/_ah/api/")
+		GsonFactory.getDefaultInstance(), null).setRootUrl("http://localhost.:8080/_ah/api/")
 		.setApplicationName("TourneyScraper")
 		.setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
 
@@ -47,10 +48,10 @@ public class SeriesService {
     }
     
     public List<Series> listSeries(String casinoId, DateTime endDate) throws IOException {
-	return mSeriesApi.listSeries().setCasinoId(casinoId).set("endDate", endDate).execute().getItems();
+	return mSeriesApi.listSeries().setCasinoId(casinoId).setEndDate(endDate).execute().getItems();
     }
     
-    public Series findCasino(String seriesId) throws IOException {
+    public Series findSeries(String seriesId) throws IOException {
 	return mSeriesApi.findSeries(seriesId).execute();
     }
     
