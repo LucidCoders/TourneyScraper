@@ -56,7 +56,7 @@ public class ImportIoRequest {
 	request.addHeader("User-Agent", USER_AGENT);
 	request.addHeader("content-type", "application/json");
 
-	System.out.println("\nSending 'GET' request to URL : " + urlWithParams);
+	System.out.println("Sending 'GET' request to URL : " + urlWithParams);
 	return executeGet(request);
     }
 
@@ -74,7 +74,7 @@ public class ImportIoRequest {
 	request.addHeader("User-Agent", USER_AGENT);
 	request.addHeader("content-type", "application/json");
 
-	System.out.println("\nSending 'GET' request to URL : " + urlWithParams);
+	System.out.println("Sending 'GET' request to URL : " + urlWithParams);
 	return executeGet(request);
     }
 

@@ -28,13 +28,13 @@ public class AtlasQuery {
 	logger.writeToLog("******************************************* ATLAS QUERY LOG *******************************************");
 	logger.appendToLog("*******************************************************************************************************\n");
 
-	listSeries();
+	listSeriesEvents();
 	
 	logger.closeFile();
     }
     
-    private void findCasino() {
-	String casinoId = "ameristar-vicksburg";	
+    private void findCasino(String casinoId) {
+//	String casinoId = "ameristar-vicksburg";
 	Casino casino;
 	
 	try {	    
@@ -150,12 +150,12 @@ public class AtlasQuery {
     }
     
     private void listSeriesEvents() {
-	String series = "";
+	String series = "11th-annual-arizona-state-poker-championship-talking-stick-resort-scottsdale-2015";
 	List<TourneyDetails> eventDetails;
 	try {
 	    Calendar c = Calendar.getInstance();
 	    c.setTime(new Date());
-	    c.add(Calendar.DATE, 11);
+	    c.add(Calendar.DATE, 0);
 	    Date date = c.getTime();
 	    
 	    eventDetails = TourneyDetailService.getInstance()
@@ -169,7 +169,7 @@ public class AtlasQuery {
 
 	    Gson gson = new GsonBuilder().create();
 	    for (TourneyDetails eventDetail : eventDetails) {
-		logger.appendLogEntry(eventDetail.getAddressUrl());
+		logger.appendLogEntry(eventDetail.getAddressUrl());// TODO figure out why there are spaces in the url
 		logger.appendLogEntry(gson.toJson(eventDetail, TourneyDetails.class)
 			+ "\n");
 	    }

@@ -23,20 +23,25 @@ public class AtlasCasinoScrape {
     private List<Result> mPokerRooms = new ArrayList<Result>();
     private List<Result> mFailedRooms = new ArrayList<Result>();
     private List<Casino> mCasinos = new ArrayList<Casino>();
+    
+    private ScrapeLogger mLogger;
 
     public AtlasCasinoScrape(List<Result> pokerRooms) {
-	mPokerRooms = pokerRooms;	
+	mPokerRooms = pokerRooms;
+	mLogger = ScrapeLogger.getInstance();
     }
     
-    public void execute() {
-	
-	ScrapeLogger logger = ScrapeLogger.getInstance();
-	logger.appendLogEntry("Begin Atlas Casino Scrape...");
+    public AtlasCasinoScrape(List<Result> pokerRooms, ScrapeLogger logger) {
+	mPokerRooms = pokerRooms;
+	mLogger = logger;
+    }
+    
+    public AtlasCasinoScrape execute() {
+	mLogger.appendLogEntry("Begin Atlas Casino Scrape...");
 	
 	ImportIoRequest casinoRequest;
 
 	for (Result pokerRoom : mPokerRooms) {
-	    
 	    String url = pokerRoom.getCasinoUrl();
 	    casinoRequest = new ImportIoRequest(url);
 	    
@@ -45,14 +50,13 @@ public class AtlasCasinoScrape {
 		response = casinoRequest.queryGet(Extractor.ATLAS_CASINO);
 	    } catch (URISyntaxException | IOException e) {
 		e.printStackTrace();
-		logger.appendLogEntry("Failed to send AtlasCasino request : " + url + " : " + e.getClass() + " : "
+		mLogger.appendLogEntry("Failed to send AtlasCasino request : " + url + " : " + e.getClass() + " : "
 			+ e.getMessage());
 		mFailedRooms.add(pokerRoom);
 		continue;
 	    }
 	    
 	    if (response.getStatusLine().getStatusCode() == 200) {
-
 		if (!casinoRequest.isAtlasError()) {
 
 		    Gson gson = new GsonBuilder().disableHtmlEscaping()
@@ -69,17 +73,18 @@ public class AtlasCasinoScrape {
 
 		} else {
 		    mFailedRooms.add(pokerRoom);
-		    logger.appendLogEntry("Failed response from AtlasCasino request" + " - " + url
+		    mLogger.appendLogEntry("Failed response from AtlasCasino request" + " - " + url
 				+ " - errorType : " + casinoRequest.getAtlasError().getErrorType()
 				+ " - error : " + casinoRequest.getAtlasError().getError());
 		}
 	    } else {
 		mFailedRooms.add(pokerRoom);
-		logger.appendLogEntry("Failed response from AtlasCasino request : " + url);
+		mLogger.appendLogEntry("Failed response from AtlasCasino request : " + url);
 	    }
 	}
 	
-	logger.appendLogEntry("Complete Atlas Casino Scrape");
+	mLogger.appendLogEntry("Complete Atlas Casino Scrape");
+	return this;
     }
     
     public List<Casino> getCasinos() {

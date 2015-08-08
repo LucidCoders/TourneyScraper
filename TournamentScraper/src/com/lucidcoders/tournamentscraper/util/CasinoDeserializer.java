@@ -17,18 +17,27 @@ public class CasinoDeserializer implements JsonDeserializer<Result> {
     @Override
     public Result deserialize(JsonElement json, Type TypeOfT, JsonDeserializationContext context) throws JsonParseException {
 	
+	//Replace address
 	JsonElement jsonAddress = json.getAsJsonObject().get(ADDRESS);
-	String address = jsonAddress.getAsString().replace("(Directions)", "").trim();
+	String address = "";
+	
+	if (jsonAddress != null && jsonAddress.getAsString() != null) {
+	    address = jsonAddress.getAsString().replace("(Directions)", "").trim();
+	}
 	
 	json.getAsJsonObject().remove(ADDRESS);
 	json.getAsJsonObject().addProperty(ADDRESS, address);
 	
+	// Replace age
 	JsonElement jsonAge = json.getAsJsonObject().get(AGE);
-	String age = jsonAge.getAsString() + "+";
+	String age = "";
+	
+	if (jsonAge != null && jsonAge.getAsString() != null) {
+	    age = jsonAge.getAsString() + "+";
+	}
 	
 	json.getAsJsonObject().remove(AGE);
 	json.getAsJsonObject().addProperty(AGE, age);
-	
 	
 	return new Gson().fromJson(json, Result.class);
     }

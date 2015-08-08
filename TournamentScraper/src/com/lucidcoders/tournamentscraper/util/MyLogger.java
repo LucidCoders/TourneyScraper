@@ -18,8 +18,8 @@ public abstract class MyLogger {
 	    String month = new SimpleDateFormat("yyyy_MM").format(new Date());
 	    String date = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(new Date());
 	    
-//	    String directory = "C:/Users/Queezy/Dev/ScrapeLog/PokerAtlas/" + month + "/Archive4";
-	    String directory = "C:/Users/Queezy/Dev/ScrapeLog/PokerAtlas/" + month;
+	    String directory = "C:/Users/Queezy/Dev/ScrapeLog/PokerAtlas/" + month + "/Archive6";
+//	    String directory = "C:/Users/Queezy/Dev/ScrapeLog/PokerAtlas/" + month;
 
 	    File dir = new File(directory);
 	    if (!dir.exists()) {

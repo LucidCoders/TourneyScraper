@@ -8,6 +8,7 @@ import java.util.List;
 import com.lucidcoders.tournamentscraper.rest.response.AtlasSeriesResponse;
 import com.lucidcoders.tournamentscraper.rest.response.AtlasSeriesResponse.SeriesResult;
 import com.lucidcoders.tournamentscraper.scrape.AtlasCasinoFullScrape;
+import com.lucidcoders.tournamentscraper.scrape.AtlasCasinoFullScrapeMultiThread;
 import com.lucidcoders.tournamentscraper.scrape.AtlasDelete;
 import com.lucidcoders.tournamentscraper.scrape.AtlasDetailsScrape;
 import com.lucidcoders.tournamentscraper.scrape.AtlasFullScrape;
@@ -25,9 +26,10 @@ public class TournamentScraperMain {
 //	new AtlasFullScrape().execute();
 //	new AtlasCasinoFullScrape().execute();
 //	new AtlasSeriesFullScrape().execute();
-	new AtlasSeriesFullScrapeMultiThread().execute();
-//	new AtlasQuery().execute();
+//	new AtlasSeriesFullScrapeMultiThread().execute();
+	new AtlasQuery().execute();
 //	new AtlasDelete().execute();
+//	new AtlasCasinoFullScrapeMultiThread().execute();
 	
 //	ArrayList<String> test = new ArrayList<String>();
 //	test.add("http://www.pokeratlas.com/poker-tournament/palm-beach-kc-west-palm-beach-65-1215pm-nl-holdem-poker-tournament?topid=99461-2015-08-04");

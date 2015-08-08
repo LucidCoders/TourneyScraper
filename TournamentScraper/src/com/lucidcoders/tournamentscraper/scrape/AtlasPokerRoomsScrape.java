@@ -20,15 +20,20 @@ public class AtlasPokerRoomsScrape {
 
     private String mUrl;
     private List<Result> mPokerRooms = new ArrayList<Result>();
+    private ScrapeLogger mLogger;
     
     public AtlasPokerRoomsScrape(String areaUrl) {
 	mUrl = "http://www.pokeratlas.com/poker-rooms/" + areaUrl.replace("http://www.pokeratlas.com/", "");
+	mLogger = ScrapeLogger.getInstance();
+    }
+    
+    public AtlasPokerRoomsScrape(String areaUrl, ScrapeLogger logger) {
+	mUrl = "http://www.pokeratlas.com/poker-rooms/" + areaUrl.replace("http://www.pokeratlas.com/", "");
+	mLogger = logger;
     }
     
     public void execute() {
-	
-	ScrapeLogger logger = ScrapeLogger.getInstance();
-	logger.appendLogEntry("Begin Atlas Poker Rooms Scrape : " + mUrl);
+	mLogger.appendLogEntry("Begin Atlas Poker Rooms Scrape : " + mUrl);
 	
 	ImportIoRequest pokerRoomsRequest = new ImportIoRequest(mUrl);
 	
@@ -37,9 +42,9 @@ public class AtlasPokerRoomsScrape {
 	    response = pokerRoomsRequest.queryGet(Extractor.ATLAS_POKER_ROOMS);
 	} catch (URISyntaxException | IOException e) {
 	    e.printStackTrace();
-	    logger.appendLogEntry(
+	    mLogger.appendLogEntry(
 		    "Failed to send AtlasPokerRooms request : " + mUrl + " : " + e.getClass() + " : " + e.getMessage());
-	    logger.appendLogEntry("Complete Atlas Poker Rooms Scrape : " + mUrl);
+	    mLogger.appendLogEntry("Complete Atlas Poker Rooms Scrape : " + mUrl);
 	    return;
 	}
 
@@ -59,16 +64,16 @@ public class AtlasPokerRoomsScrape {
 //		System.out.println("Testing: " + testResponse);
 
 	    } else {
-		logger.appendLogEntry("Failed response from AtlasPokerRooms request"
+		mLogger.appendLogEntry("Failed response from AtlasPokerRooms request"
 			+ " - " + mUrl
 			+ " - errorType : " + pokerRoomsRequest.getAtlasError().getErrorType()
 			+ " - error : " + pokerRoomsRequest.getAtlasError().getError());
 	    }
 	} else {
-	    logger.appendLogEntry("Failed response from AtlasPokerRooms request : " + mUrl);
+	    mLogger.appendLogEntry("Failed response from AtlasPokerRooms request : " + mUrl);
 	}
 	
-	logger.appendLogEntry("Complete Atlas Poker Rooms Scrape : " + mUrl);
+	mLogger.appendLogEntry("Complete Atlas Poker Rooms Scrape : " + mUrl);
     }
     
     public List<Result> getPokerRooms() {

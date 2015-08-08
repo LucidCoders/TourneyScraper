@@ -52,6 +52,7 @@ public class AtlasCasinoFullScrape {
 		    failedRoomsUrls.add(url);
 		    logger.appendLogEntry("********** Failed getting Poker Room Links : " + url + " **********\n");
 		}
+		break;
 	    }
 	    
 	    if (failedRoomsUrls.size() > 0) {
