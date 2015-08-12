@@ -16,6 +16,7 @@ import com.lucidcoders.tournamentscraper.scrape.AtlasQuery;
 import com.lucidcoders.tournamentscraper.scrape.AtlasSeriesFullScrape;
 import com.lucidcoders.tournamentscraper.scrape.AtlasSeriesFullScrapeMultiThread;
 import com.lucidcoders.tournamentscraper.scrape.SeriesEventScrape;
+import com.lucidcoders.tournamentscraper.util.MyGeocoder;
 
 
 @SuppressWarnings({"unused"})
@@ -23,8 +24,6 @@ public class TournamentScraperMain {
 
     public static void main(String[] args) throws URISyntaxException, IOException {
 	
-//	new AtlasFullScrape().execute();
-//	new AtlasCasinoFullScrape().execute();
 //	new AtlasSeriesFullScrape().execute();
 //	new AtlasSeriesFullScrapeMultiThread().execute();
 	new AtlasQuery().execute();

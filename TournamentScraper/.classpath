@@ -29,5 +29,7 @@
 	<classpathentry kind="lib" path="libs-backend/tourneyDetailApi-v1-java.zip"/>
 	<classpathentry kind="lib" path="libs-backend/seriesApi-v1-java.zip"/>
 	<classpathentry kind="lib" path="libs/google-http-client-gson-1.20.0.jar"/>
+	<classpathentry kind="lib" path="libs/geocoder-java-0.16.jar" sourcepath="C:/Users/Queezy/Downloads/geocoder-java-0.16-sources.jar"/>
+	<classpathentry kind="lib" path="libs/slf4j-api-1.7.7.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

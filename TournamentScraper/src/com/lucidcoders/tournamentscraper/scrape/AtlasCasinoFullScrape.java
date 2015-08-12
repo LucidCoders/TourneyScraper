@@ -36,12 +36,10 @@ public class AtlasCasinoFullScrape {
 	    List<String> failedRoomsUrls = new ArrayList<String>();
 	    
 	    for (String url : areaUrls) {
-		
 		AtlasPokerRoomsScrape pokerRoomsScrape = new AtlasPokerRoomsScrape(url);
 		pokerRoomsScrape.execute();
 		
 		if (pokerRoomsScrape.getPokerRooms().size() > 0) {
-		    
 		    logger.appendLogEntry("********** Success getting Poker Room Links : " + url + " **********\n");
 		    
 		    for (Result pokerRoom : pokerRoomsScrape.getPokerRooms()) {
@@ -52,14 +50,12 @@ public class AtlasCasinoFullScrape {
 		    failedRoomsUrls.add(url);
 		    logger.appendLogEntry("********** Failed getting Poker Room Links : " + url + " **********\n");
 		}
-		break;
 	    }
 	    
 	    if (failedRoomsUrls.size() > 0) {
 		logger.appendLogEntry("********** Begin Failed Poker Room Links Retry **********");
 
 		for (String url : failedRoomsUrls) {
-
 		    AtlasPokerRoomsScrape pokerRoomsScrape = new AtlasPokerRoomsScrape(url);
 		    pokerRoomsScrape.execute();
 
@@ -78,7 +74,6 @@ public class AtlasCasinoFullScrape {
 	    }
 	    
 	    if (pokerRooms.size() > 0) {
-		
 		AtlasCasinoScrape casinoScrape = new AtlasCasinoScrape(pokerRooms);
 		casinoScrape.execute();
 		

@@ -28,8 +28,9 @@ public class AtlasQuery {
 	logger.writeToLog("******************************************* ATLAS QUERY LOG *******************************************");
 	logger.appendToLog("*******************************************************************************************************\n");
 
-	listSeriesEvents();
-	
+	nearbyCasinos(26.1294225, -80.106541);
+
+//	listSeriesEvents();
 	logger.closeFile();
     }
     
@@ -47,6 +48,25 @@ public class AtlasQuery {
 	if (casino != null) {
 	    Gson gson = new GsonBuilder().create();
 	    logger.appendLogEntry(gson.toJson(casino, Casino.class) + "\n");
+	} else {
+	    logger.appendLogEntry("Failed or No Results\n");
+	}
+    }
+    
+    private void nearbyCasinos(Double lat, Double lng) {
+	List<Casino> casinos;
+	try {	    
+	    casinos = CasinoService.getInstance().nearbyCasinos(lat, lng);	    
+	} catch (IOException | GeneralSecurityException e) {
+	    e.printStackTrace();
+	    return;
+	}
+	
+	if (casinos != null && casinos.size() > 0) {
+	    Gson gson = new GsonBuilder().create();
+	    for (Casino casino : casinos) {
+		logger.appendLogEntry(gson.toJson(casino, Casino.class) + "\n");
+	    }
 	} else {
 	    logger.appendLogEntry("Failed or No Results\n");
 	}

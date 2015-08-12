@@ -8,6 +8,7 @@ import com.google.api.client.util.Base64;
 import com.lucidcoders.tournamentscraper.rest.response.AtlasCasinoResponse;
 import com.lucidcoders.tournamentscraper.rest.response.AtlasCasinoResponse.Result;
 import com.lucidcoders.tournamentscraper.rest.response.AtlasPokerRoomsResponse;
+import com.lucidcoders.tournamentscraper.util.MyGeocoder;
 import com.lucidcoders.tournamentscraper.util.Util;
 import com.lucidcoders.tourneyspot.backend.casinoApi.model.Casino;
 
@@ -59,6 +60,10 @@ public class CasinoBuilder {
 	    if (imageBytes != null && imageBytes.length > 0) {
 		casino.setImage(new String(Base64.encodeBase64(imageBytes)));
 	    }
+	    
+	    MyGeocoder geocoder = new MyGeocoder().execute(casinoResult.getAddress());
+	    casino.setLat(geocoder.getLat());
+	    casino.setLng(geocoder.getLng());
 	}
 	
 	return casino;

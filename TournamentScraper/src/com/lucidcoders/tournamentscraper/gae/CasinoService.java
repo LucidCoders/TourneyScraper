@@ -7,6 +7,8 @@ import java.util.List;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
 import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
+import com.google.api.client.http.HttpRequest;
+import com.google.api.client.http.HttpRequestInitializer;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.lucidcoders.tourneyspot.backend.casinoApi.CasinoApi;
 import com.lucidcoders.tourneyspot.backend.casinoApi.model.Casino;
@@ -27,8 +29,17 @@ public class CasinoService {
     private void build() throws GeneralSecurityException, IOException {
 
 	CasinoApi.Builder builder = new CasinoApi.Builder(GoogleNetHttpTransport.newTrustedTransport(),
-		JacksonFactory.getDefaultInstance(), null).setRootUrl("http://localhost:8080/_ah/api/")
+		JacksonFactory.getDefaultInstance(), new HttpRequestInitializer() {
+		    
+		    @Override
+		    public void initialize(HttpRequest httpRequest) throws IOException {
+			httpRequest.setConnectTimeout(10 * 1000 * 60);
+		        httpRequest.setReadTimeout(10 * 1000 * 60);
+		    }
+		})
+		.setRootUrl("http://localhost:8080/_ah/api/")
 		.setApplicationName("TourneyScraper")
+		
 		.setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
 
 		    @Override
@@ -47,6 +58,10 @@ public class CasinoService {
     
     public List<Casino> listCasinos() throws IOException {
 	return mService.listCasinos().execute().getItems();
+    }
+    
+    public List<Casino> nearbyCasinos(Double lat, Double lng) throws IOException {
+	return mService.nearbyCasinos(lat, lng).execute().getItems();
     }
     
     public Casino findCasino(String casinoId) throws IOException {
