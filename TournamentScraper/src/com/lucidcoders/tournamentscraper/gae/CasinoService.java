@@ -30,18 +30,16 @@ public class CasinoService {
 
 	CasinoApi.Builder builder = new CasinoApi.Builder(GoogleNetHttpTransport.newTrustedTransport(),
 		JacksonFactory.getDefaultInstance(), new HttpRequestInitializer() {
-		    
 		    @Override
 		    public void initialize(HttpRequest httpRequest) throws IOException {
-			httpRequest.setConnectTimeout(10 * 1000 * 60);
-		        httpRequest.setReadTimeout(10 * 1000 * 60);
+			httpRequest.setConnectTimeout(60 * 1000);
+		        httpRequest.setReadTimeout(60 * 1000);
 		    }
 		})
 		.setRootUrl("http://localhost:8080/_ah/api/")
 		.setApplicationName("TourneyScraper")
 		
 		.setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
-
 		    @Override
 		    public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest)
 			    throws IOException {
