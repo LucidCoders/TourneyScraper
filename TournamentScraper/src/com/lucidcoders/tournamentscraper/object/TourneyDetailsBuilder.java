@@ -85,8 +85,12 @@ public class TourneyDetailsBuilder {
 	tourneyDetails.setCasinoId(eachResult.getCasinoSource().replace("/poker-room/", ""));
 	tourneyDetails.setCasinoName(eachResult.getCasinoText());
 	tourneyDetails.setEventName(eachResult.getEventName());
-	tourneyDetails.setSeriesId(eachResult.getSeriesSource().replace("/poker-tournament-series/", ""));
-	tourneyDetails.setSeriesName(eachResult.getSeriesText());
+	
+	if (eachResult.getSeriesSource() != null) {
+	    tourneyDetails.setSeriesId(eachResult.getSeriesSource().replace("/poker-tournament-series/", ""));
+	    tourneyDetails.setSeriesName(eachResult.getSeriesText());
+	}
+	
 	tourneyDetails.setBuyIn(eachResult.getBuyIn());
 	tourneyDetails.setEventDate(Util.dateToDateTime(eachResult.getEventDate()));
 	tourneyDetails.setEventTime(Util.formatEventTime(eachResult.getEventTime()));
