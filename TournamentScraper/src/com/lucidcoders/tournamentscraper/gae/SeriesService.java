@@ -47,8 +47,8 @@ public class SeriesService {
 	mSeriesApi.updateSeries(series).execute();
     }
     
-    public List<Series> listSeries(String casinoId, DateTime endDate) throws IOException {
-	return mSeriesApi.listSeries().setCasinoId(casinoId).setEndDate(endDate).execute().getItems();
+    public List<Series> listSeries(String casinoId, DateTime currentDate) throws IOException {
+	return mSeriesApi.listSeries().setCasinoId(casinoId).setCurrentDate(currentDate).execute().getItems();
     }
     
     public Series findSeries(String seriesId) throws IOException {

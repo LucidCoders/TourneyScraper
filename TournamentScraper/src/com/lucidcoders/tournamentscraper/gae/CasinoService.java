@@ -58,8 +58,8 @@ public class CasinoService {
 	return mService.listCasinos().execute().getItems();
     }
     
-    public List<Casino> nearbyCasinos(Double lat, Double lng) throws IOException {
-	return mService.nearbyCasinos(lat, lng).execute().getItems();
+    public List<Casino> nearbyCasinos(Double lat, Double lng, Double radius) throws IOException {
+	return mService.nearbyCasinos(lat, lng, radius).execute().getItems();
     }
     
     public Casino findCasino(String casinoId) throws IOException {

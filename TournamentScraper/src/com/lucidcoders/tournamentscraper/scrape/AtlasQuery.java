@@ -28,7 +28,8 @@ public class AtlasQuery {
 	logger.writeToLog("******************************************* ATLAS QUERY LOG *******************************************");
 	logger.appendToLog("*******************************************************************************************************\n");
 
-	nearbyCasinos(26.1294225, -80.106541);
+//	nearbyCasinos(26.1294225, -80.106541);
+	listEvents();
 
 //	listSeriesEvents();
 	logger.closeFile();
@@ -53,10 +54,10 @@ public class AtlasQuery {
 	}
     }
     
-    private void nearbyCasinos(Double lat, Double lng) {
+    private void nearbyCasinos(Double lat, Double lng, Double radius) {
 	List<Casino> casinos;
 	try {	    
-	    casinos = CasinoService.getInstance().nearbyCasinos(lat, lng);	    
+	    casinos = CasinoService.getInstance().nearbyCasinos(lat, lng, radius);	    
 	} catch (IOException | GeneralSecurityException e) {
 	    e.printStackTrace();
 	    return;
@@ -140,7 +141,7 @@ public class AtlasQuery {
     }
     
     private void listEvents() {
-	String casino ="potawatomi-casino-milwaukee";
+	String casino ="hard-rock-hollywood-ft-lauderdale";
 	
 	List<TourneyDetails> eventDetails;
 	try {

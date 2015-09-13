@@ -1,7 +1,10 @@
 package com.lucidcoders.tournamentscraper.object;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
+import com.google.api.client.util.Base64;
 import com.lucidcoders.tournamentscraper.rest.response.SeriesDetailsResponse;
 import com.lucidcoders.tournamentscraper.rest.response.AtlasSeriesResponse.SeriesResult;
 import com.lucidcoders.tournamentscraper.rest.response.SeriesDetailsResponse.SeriesDetailResult;
@@ -41,6 +44,18 @@ public class SeriesBuilder {
 		} else {
 		    series.setEndDate(Util.stringToDateTime(dateStrings[0].trim(), "MMM dd, yyyy"));
 		}
+	    }
+	    
+	    byte[] imageBytes = null;
+	    try {
+		imageBytes = Util.downloadImageUrl(new URL(seriesDetailResult.getImage()));
+	    } catch (MalformedURLException e) {
+		// TODO Maybe add logging here
+		e.printStackTrace();
+	    }
+	    
+	    if (imageBytes != null && imageBytes.length > 0) {
+		series.setImage(new String(Base64.encodeBase64(imageBytes)));
 	    }
 	    
 	    series.setLocation(seriesDetailResult.getLocation());

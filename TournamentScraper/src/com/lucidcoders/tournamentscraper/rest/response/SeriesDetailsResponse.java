@@ -28,6 +28,7 @@ public class SeriesDetailsResponse extends BaseQueryResponse {
 	private String seriesName;
 	private String description;
 	private String location;
+	private String image;
 
 	public String getDate() {
 	    return date;
@@ -75,6 +76,14 @@ public class SeriesDetailsResponse extends BaseQueryResponse {
 
 	public void setLocation(String location) {
 	    this.location = location;
+	}
+	
+	public String getImage() {
+	    return image;
+	}
+
+	public void setImage(String image) {
+	    this.image = image;
 	}
     }
 }
