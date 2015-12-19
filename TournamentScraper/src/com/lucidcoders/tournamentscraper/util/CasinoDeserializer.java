@@ -38,7 +38,7 @@ public class CasinoDeserializer implements JsonDeserializer<Result> {
 	
 	json.getAsJsonObject().remove(AGE);
 	json.getAsJsonObject().addProperty(AGE, age);
-	
+	//todo Expected BEGIN_ARRAY but was STRING error
 	return new Gson().fromJson(json, Result.class);
     }
 

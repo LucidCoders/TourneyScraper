@@ -18,7 +18,7 @@ public abstract class MyLogger {
 	    String month = new SimpleDateFormat("yyyy_MM").format(new Date());
 	    String date = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(new Date());
 	    
-	    String directory = "C:/Users/Queezy/Dev/ScrapeLog/PokerAtlas/" + month + "/Archive1";
+	    String directory = "C:/Users/Queezy/Dev/ScrapeLog/PokerAtlas/" + month + "/FullScrape_12_19_2015";
 //	    String directory = "C:/Users/Queezy/Dev/ScrapeLog/PokerAtlas/" + month;
 
 	    File dir = new File(directory);
@@ -68,6 +68,7 @@ public abstract class MyLogger {
     public void appendLogEntry(String content) {
 	if (mBufferedWriter != null) {
 	    try {
+		//todo stream closed error for atlas full scrape multi thread
 		mBufferedWriter.append("\n" + Util.getLogTimeStamp() + content);
 	    } catch (IOException e) {
 		e.printStackTrace();

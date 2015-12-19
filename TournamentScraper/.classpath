@@ -31,5 +31,7 @@
 	<classpathentry kind="lib" path="libs-backend/casinoApi-v1-java.zip"/>
 	<classpathentry kind="lib" path="libs-backend/seriesApi-v1-java.zip"/>
 	<classpathentry kind="lib" path="libs-backend/tourneyDetailApi-v1-java.zip"/>
+	<classpathentry kind="lib" path="libs/geonames-1.1.13.jar"/>
+	<classpathentry kind="lib" path="libs/jdom-1.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

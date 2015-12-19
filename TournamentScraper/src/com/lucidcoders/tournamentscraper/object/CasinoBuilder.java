@@ -4,6 +4,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
+import org.geonames.Timezone;
+import org.geonames.WebService;
+
 import com.google.api.client.util.Base64;
 import com.lucidcoders.tournamentscraper.rest.response.AtlasCasinoResponse;
 import com.lucidcoders.tournamentscraper.rest.response.AtlasCasinoResponse.Result;
@@ -64,6 +67,14 @@ public class CasinoBuilder {
 	    MyGeocoder geocoder = new MyGeocoder().execute(casinoResult.getAddress());
 	    casino.setLat(geocoder.getLat());
 	    casino.setLng(geocoder.getLng());
+	    
+	    try {
+		WebService.setUserName("LucidCoders");
+		Timezone timezone = WebService.timezone(geocoder.getLat(), geocoder.getLng());
+		casino.setTimeZone(timezone.getTimezoneId());
+	    } catch (Exception e) {
+		e.printStackTrace();
+	    }
 	}
 	
 	return casino;

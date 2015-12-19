@@ -40,7 +40,12 @@ public void execute() {
 				"**************************************** ATLAS EVENT SCRAPE LOG ****************************************");
 			eventLogger.appendToLog(
 				"*********************************************************************************************************\n");
-			AtlasUpcomingScrape upcomingScrape = new AtlasUpcomingScrape(url, 10, eventLogger);
+			int pages = 10;
+			if (url.contains("las-vegas-nevada")) {
+			    pages = 40;
+			}
+			
+			AtlasUpcomingScrape upcomingScrape = new AtlasUpcomingScrape(url, pages, eventLogger);
 			upcomingScrape.execute();
 
 			List<String> eventLinks = upcomingScrape.getEventLinks();

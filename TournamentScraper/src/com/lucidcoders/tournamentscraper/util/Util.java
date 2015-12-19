@@ -7,6 +7,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 //import org.apache.commons.
 
@@ -40,7 +41,8 @@ public class Util {
     }
     
     public static DateTime dateToDateTime(Date date) {
-	return new DateTime(date.getTime());
+	DateTime dateTime = new DateTime(date.getTime());
+	return dateTime;
     }
     
     public static String formatEventTime(String eventTime) {
@@ -65,6 +67,7 @@ public class Util {
 	
 	try {
 	    SimpleDateFormat formatter = new SimpleDateFormat(dateFormat);
+	    formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
 	    Date date = formatter.parse(dateString);
 	    dateTime = dateToDateTime(date);
 	} catch (ParseException e) {

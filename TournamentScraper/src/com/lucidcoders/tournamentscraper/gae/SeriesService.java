@@ -29,7 +29,7 @@ public class SeriesService {
     private void build() throws GeneralSecurityException, IOException {
 	
 	SeriesApi.Builder builder = new SeriesApi.Builder(GoogleNetHttpTransport.newTrustedTransport(),
-		GsonFactory.getDefaultInstance(), null).setRootUrl("http://localhost.:8080/_ah/api/")
+		GsonFactory.getDefaultInstance(), null).setRootUrl("https://tourneyspot.appspot.com/_ah/api/")
 		.setApplicationName("TourneyScraper")
 		.setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
 

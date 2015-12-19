@@ -29,7 +29,7 @@ public class AtlasQuery {
 	logger.appendToLog("*******************************************************************************************************\n");
 
 //	nearbyCasinos(26.1294225, -80.106541);
-	listEvents();
+	listSeriesEvents();
 
 //	listSeriesEvents();
 	logger.closeFile();
@@ -171,7 +171,7 @@ public class AtlasQuery {
     }
     
     private void listSeriesEvents() {
-	String series = "11th-annual-arizona-state-poker-championship-talking-stick-resort-scottsdale-2015";
+	String series = "commerce-poker-series-2015-commerce-casino-los-angeles-2015";
 	List<TourneyDetails> eventDetails;
 	try {
 	    Calendar c = Calendar.getInstance();
@@ -180,7 +180,7 @@ public class AtlasQuery {
 	    Date date = c.getTime();
 	    
 	    eventDetails = TourneyDetailService.getInstance()
-		    .listSeriesEvents(series, Util.dateToDateTimeDateOnly(date));
+		    .listSeriesEvents(series, null);
 	} catch (IOException | GeneralSecurityException e) {
 	    e.printStackTrace();
 	    return;

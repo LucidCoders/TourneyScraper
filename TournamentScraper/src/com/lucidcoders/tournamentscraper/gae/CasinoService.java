@@ -36,7 +36,7 @@ public class CasinoService {
 		        httpRequest.setReadTimeout(60 * 1000);
 		    }
 		})
-		.setRootUrl("http://localhost:8080/_ah/api/")
+		.setRootUrl("https://tourneyspot.appspot.com/_ah/api/")
 		.setApplicationName("TourneyScraper")
 		
 		.setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {

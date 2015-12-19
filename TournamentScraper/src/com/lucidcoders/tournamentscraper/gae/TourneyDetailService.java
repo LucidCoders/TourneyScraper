@@ -29,7 +29,7 @@ public class TourneyDetailService {
     private void build() throws GeneralSecurityException, IOException {
 
 	TourneyDetailApi.Builder builder = new TourneyDetailApi.Builder(GoogleNetHttpTransport.newTrustedTransport(),
-		JacksonFactory.getDefaultInstance(), null).setRootUrl("http://localhost:8080/_ah/api/")
+		JacksonFactory.getDefaultInstance(), null).setRootUrl("https://tourneyspot.appspot.com/_ah/api/")
 		.setApplicationName("TourneyScraper")
 		.setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
 
