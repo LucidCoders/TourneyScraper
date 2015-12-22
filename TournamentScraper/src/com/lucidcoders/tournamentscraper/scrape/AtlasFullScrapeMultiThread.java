@@ -42,7 +42,7 @@ public void execute() {
 				"*********************************************************************************************************\n");
 			int pages = 10;
 			if (url.contains("las-vegas-nevada")) {
-			    pages = 40;
+			    pages = 60;
 			}
 			
 			AtlasUpcomingScrape upcomingScrape = new AtlasUpcomingScrape(url, pages, eventLogger);

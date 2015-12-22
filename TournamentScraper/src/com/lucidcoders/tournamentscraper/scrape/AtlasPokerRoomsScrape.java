@@ -39,7 +39,7 @@ public class AtlasPokerRoomsScrape {
 	
 	HttpResponse response;
 	try {
-	    response = pokerRoomsRequest.queryGet(Extractor.ATLAS_POKER_ROOMS);
+	    response = pokerRoomsRequest.queryGet(Extractor.ATLAS_POKER_ROOMS_FEATURED);
 	} catch (URISyntaxException | IOException e) {
 	    e.printStackTrace();
 	    mLogger.appendLogEntry(

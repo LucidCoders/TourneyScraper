@@ -33,9 +33,9 @@ public class TournamentScraperMain {
 
     public static void main(String[] args) throws URISyntaxException, IOException {
 	
-//	new AtlasCasinoFullScrapeMultiThread().execute();
+	new AtlasCasinoFullScrapeMultiThread().execute();
 //	new AtlasSeriesFullScrapeMultiThread().execute();
-	new AtlasFullScrapeMultiThread().execute();
+//	new AtlasFullScrapeMultiThread().execute();
 	
 //	new AtlasSeriesFullScrape().execute();
 
